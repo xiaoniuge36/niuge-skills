@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code Review Expert"
+  short_description: "Structured review for diffs, PRs, bugs, and merge risk"
+  default_prompt: "Use $code-review-expert to review the current changes for bugs, regressions, security issues, missing tests, and merge risk."
