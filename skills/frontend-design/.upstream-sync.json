@@ -1,0 +1,10 @@
+{
+  "repo": "https://github.com/anthropics/skills.git",
+  "branch": "main",
+  "sourcePath": "skills/frontend-design",
+  "targetPath": "skills/frontend-design",
+  "managedFiles": [
+    "LICENSE.txt",
+    "SKILL.md"
+  ]
+}

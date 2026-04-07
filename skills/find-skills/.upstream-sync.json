@@ -1,0 +1,9 @@
+{
+  "repo": "https://github.com/vercel-labs/skills.git",
+  "branch": "main",
+  "sourcePath": "skills/find-skills",
+  "targetPath": "skills/find-skills",
+  "managedFiles": [
+    "SKILL.md"
+  ]
+}

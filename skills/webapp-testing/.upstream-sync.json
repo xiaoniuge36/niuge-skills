@@ -1,0 +1,14 @@
+{
+  "repo": "https://github.com/anthropics/skills.git",
+  "branch": "main",
+  "sourcePath": "skills/webapp-testing",
+  "targetPath": "skills/webapp-testing",
+  "managedFiles": [
+    "LICENSE.txt",
+    "SKILL.md",
+    "examples/console_logging.py",
+    "examples/element_discovery.py",
+    "examples/static_html_automation.py",
+    "scripts/with_server.py"
+  ]
+}

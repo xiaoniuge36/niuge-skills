@@ -1,0 +1,43 @@
+{
+  "skills": [
+    {
+      "name": "frontend-design",
+      "repo": "https://github.com/anthropics/skills.git",
+      "branch": "main",
+      "sourcePath": "skills/frontend-design",
+      "targetPath": "skills/frontend-design",
+      "exclude": [
+        "README.md",
+        "agents/agent.yaml",
+        "agents/openai.yaml",
+        ".upstream-sync.json"
+      ]
+    },
+    {
+      "name": "webapp-testing",
+      "repo": "https://github.com/anthropics/skills.git",
+      "branch": "main",
+      "sourcePath": "skills/webapp-testing",
+      "targetPath": "skills/webapp-testing",
+      "exclude": [
+        "README.md",
+        "agents/agent.yaml",
+        "agents/openai.yaml",
+        ".upstream-sync.json"
+      ]
+    },
+    {
+      "name": "find-skills",
+      "repo": "https://github.com/vercel-labs/skills.git",
+      "branch": "main",
+      "sourcePath": "skills/find-skills",
+      "targetPath": "skills/find-skills",
+      "exclude": [
+        "README.md",
+        "agents/agent.yaml",
+        "agents/openai.yaml",
+        ".upstream-sync.json"
+      ]
+    }
+  ]
+}
