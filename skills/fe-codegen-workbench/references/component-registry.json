@@ -1,0 +1,235 @@
+{
+  "version": "2.0.0",
+  "description": "前端组件/模板注册表。支持本地、npm 包、远程三种来源，Agent 通过此文件索引并加载组件定义。",
+  "sourceTypes": {
+    "local": "本地 markdown 文件，路径相对于本 JSON 所在目录",
+    "npm": "npm 包组件，需安装后按 export 路径引入",
+    "remote": "远程 URL，运行时拉取组件定义（markdown/json）"
+  },
+  "components": [
+    {
+      "id": "react-standard-list-crud",
+      "name": "React 标准列表页（ProTable + 搜索 + CRUD 弹窗）",
+      "description": "适用于搜索+表格+新增/编辑/删除的标准 CRUD 页面",
+      "source": {
+        "type": "local",
+        "path": "components/react-standard-list-crud.md"
+      },
+      "techStack": "react",
+      "scenes": ["list", "standard", "crud"],
+      "componentScope": "page",
+      "keywords": ["列表", "列表页", "表格", "搜索", "查询", "新增", "编辑", "删除", "批量", "ProTable", "CRUD", "增删改查"],
+      "antiKeywords": ["导入", "xlsx", "excel", "详情页", "单据详情"]
+    },
+    {
+      "id": "react-standard-modal-form",
+      "name": "React 弹窗表单（ModalForm）",
+      "description": "适用于 <10 字段的新增/编辑场景",
+      "source": {
+        "type": "local",
+        "path": "components/react-standard-modal-form.md"
+      },
+      "techStack": "react",
+      "scenes": ["modal", "standard", "form"],
+      "componentScope": "component",
+      "keywords": ["弹窗", "弹框", "ModalForm", "对话框", "新增", "编辑", "表单", "提交"],
+      "antiKeywords": ["导入", "excel", "xlsx", "详情页", "路由"]
+    },
+    {
+      "id": "react-drawer-form",
+      "name": "React 抽屉编辑表单（DrawerForm）",
+      "description": "适用于 10-20 字段的新增/编辑场景",
+      "source": {
+        "type": "local",
+        "path": "components/react-drawer-form.md"
+      },
+      "techStack": "react",
+      "scenes": ["drawer", "form", "edit"],
+      "componentScope": "component",
+      "keywords": ["抽屉", "抽屉编辑", "DrawerForm", "侧边", "新增", "编辑", "表单", "提交"],
+      "antiKeywords": ["导入", "excel", "xlsx", "详情页", "独立页面", "路由"]
+    },
+    {
+      "id": "react-drawer-detail",
+      "name": "React 抽屉详情（Drawer Detail）",
+      "description": "适用于列表页快速查看详情、不需要独立 URL 的详情展示",
+      "source": {
+        "type": "local",
+        "path": "components/react-drawer-detail.md"
+      },
+      "techStack": "react",
+      "scenes": ["drawer", "detail", "view"],
+      "componentScope": "component",
+      "keywords": ["抽屉", "抽屉详情", "查看详情", "侧边详情", "Drawer", "详情", "查看"],
+      "antiKeywords": ["导入", "excel", "xlsx", "编辑", "表单", "独立页面", "路由"]
+    },
+    {
+      "id": "react-batch-schema-form",
+      "name": "React 批量 Schema 表单（BetaSchemaForm）",
+      "description": "适用于批量编辑、批量审批、动态字段配置的批量操作",
+      "source": {
+        "type": "local",
+        "path": "components/react-batch-schema-form.md"
+      },
+      "techStack": "react",
+      "scenes": ["batch", "schema", "form", "modal"],
+      "componentScope": "component",
+      "keywords": ["批量", "批量编辑", "批量更新", "schema", "动态表单", "多选", "批量操作", "批量审批", "批量修改"],
+      "antiKeywords": ["导入", "excel", "xlsx", "详情页", "单条", "单个"]
+    },
+    {
+      "id": "react-nonstandard-detail",
+      "name": "React 非标独立详情页（Detail Page）",
+      "description": "适用于审批流程/附件预览/需要独立 URL 的详情展示",
+      "source": {
+        "type": "local",
+        "path": "components/react-nonstandard-detail.md"
+      },
+      "techStack": "react",
+      "scenes": ["detail", "nonstandard"],
+      "componentScope": "page",
+      "keywords": ["详情", "详情页", "单据详情", "查看", "审批", "流程", "节点", "时间轴", "出差申请单", "单据号", "附件预览", "卡片布局", "路由参数"],
+      "antiKeywords": ["导入", "上传", "excel", "xlsx", "模板下载", "导入记录", "列表", "表格", "搜索"]
+    },
+    {
+      "id": "react-standard-form-page",
+      "name": "React 标准表单页（独立路由新增/编辑）",
+      "description": "适用于 >20 字段的复杂表单",
+      "source": {
+        "type": "local",
+        "path": "components/react-standard-form-page.md"
+      },
+      "techStack": "react",
+      "scenes": ["form", "standard", "page"],
+      "componentScope": "page",
+      "keywords": ["表单", "表单页", "新增页面", "编辑页面", "保存", "提交", "校验", "路由参数", "id"],
+      "antiKeywords": ["导入", "excel", "xlsx", "列表", "表格"]
+    },
+    {
+      "id": "react-import-list-modal",
+      "name": "React 带列表导入弹窗（Import List Modal / Excel Import）",
+      "description": "适用于 Excel 数据导入，包含模板下载、文件上传、导入记录列表",
+      "source": {
+        "type": "local",
+        "path": "components/react-import-list-modal.md"
+      },
+      "techStack": "react",
+      "scenes": ["import", "modal"],
+      "componentScope": "component",
+      "keywords": ["导入", "上传", "excel", "xlsx", "xls", "模板下载", "导入历史", "导入记录", "异步导入", "处理结果", "轮询", "下载错误", "下载处理结果"],
+      "antiKeywords": ["详情", "审批", "流程", "单据详情"]
+    },
+    {
+      "id": "react-pc-file-upload",
+      "name": "React PC 文件上传组件（Ant Design Upload + 进度条）",
+      "description": "适用于 React + Ant Design 的文件/图片上传",
+      "source": {
+        "type": "local",
+        "path": "components/react-pc-file-upload.md"
+      },
+      "techStack": "react",
+      "scenes": ["upload", "pc", "file", "component"],
+      "componentScope": "common",
+      "keywords": ["上传", "文件上传", "图片上传", "附件", "antd", "ant-design", "pc", "进度条", "upload", "react", "picture-card"],
+      "antiKeywords": ["h5", "移动端", "vant", "导入", "excel", "vue", "element"]
+    },
+    {
+      "id": "react-virtual-paginated-select",
+      "name": "React 大数据渲染下拉组件（虚拟列表 + 分页下拉 + 编辑回显）",
+      "description": "适用于 8000+ 条数据的高性能渲染",
+      "source": {
+        "type": "local",
+        "path": "components/react-virtual-paginated-select.md"
+      },
+      "techStack": "react",
+      "scenes": ["bigdata", "virtual", "select", "paginated"],
+      "componentScope": "common",
+      "keywords": ["大数据", "虚拟列表", "虚拟滚动", "分页下拉", "远程搜索", "编辑回显", "8000", "万级", "高性能", "react-window", "virtual", "paginated", "select", "属性值", "分类选择"],
+      "antiKeywords": ["vue", "element", "标准列表", "导入"]
+    },
+    {
+      "id": "vue3-standard-list-crud",
+      "name": "Vue3 标准列表页（Element Plus + Composition API）",
+      "description": "Vue 3 标准 CRUD 列表页",
+      "source": {
+        "type": "local",
+        "path": "components/vue3-standard-list-crud.md"
+      },
+      "techStack": "vue3",
+      "scenes": ["list", "standard", "crud"],
+      "componentScope": "page",
+      "keywords": ["列表", "列表页", "表格", "搜索", "查询", "新增", "编辑", "删除", "批量", "el-table", "vue3", "composition"],
+      "antiKeywords": ["导入", "xlsx", "excel", "详情页", "单据详情", "vue2"]
+    },
+    {
+      "id": "vue3-virtual-paginated-select",
+      "name": "Vue3 大数据渲染下拉组件（el-table-v2 + 分页下拉 + 编辑回显）",
+      "description": "Vue 3 + Element Plus 的 8000+ 条数据高性能渲染",
+      "source": {
+        "type": "local",
+        "path": "components/vue3-virtual-paginated-select.md"
+      },
+      "techStack": "vue3",
+      "scenes": ["bigdata", "virtual", "select", "paginated"],
+      "componentScope": "common",
+      "keywords": ["大数据", "虚拟列表", "虚拟滚动", "分页下拉", "远程搜索", "编辑回显", "8000", "万级", "高性能", "el-table-v2", "virtual", "paginated", "select", "属性值", "分类选择", "vue3", "element-plus"],
+      "antiKeywords": ["react", "vue2", "标准列表", "导入"]
+    },
+    {
+      "id": "vue2-standard-list-crud",
+      "name": "Vue2 标准列表页（Element UI + Options API）",
+      "description": "Vue 2 标准 CRUD 列表页",
+      "source": {
+        "type": "local",
+        "path": "components/vue2-standard-list-crud.md"
+      },
+      "techStack": "vue2",
+      "scenes": ["list", "standard", "crud"],
+      "componentScope": "page",
+      "keywords": ["列表", "列表页", "表格", "搜索", "查询", "新增", "编辑", "删除", "批量", "getwayTable", "vue2", "options"],
+      "antiKeywords": ["导入", "xlsx", "excel", "详情页", "单据详情", "vue3"]
+    },
+    {
+      "id": "vue2-virtual-paginated-select",
+      "name": "Vue2 大数据渲染下拉组件（vue-virtual-scroller + 分页下拉 + 编辑回显）",
+      "description": "Vue 2 + Element UI 的 8000+ 条数据高性能渲染",
+      "source": {
+        "type": "local",
+        "path": "components/vue2-virtual-paginated-select.md"
+      },
+      "techStack": "vue2",
+      "scenes": ["bigdata", "virtual", "select", "paginated"],
+      "componentScope": "common",
+      "keywords": ["大数据", "虚拟列表", "虚拟滚动", "分页下拉", "远程搜索", "编辑回显", "8000", "万级", "高性能", "vue-virtual-scroller", "virtual", "paginated", "select", "属性值", "分类选择", "vue2", "element-ui"],
+      "antiKeywords": ["react", "vue3", "标准列表", "导入"]
+    },
+    {
+      "id": "vue2-h5-file-upload",
+      "name": "Vue2 H5 文件上传组件（Vant Uploader + 水印）",
+      "description": "移动端文件上传，支持拍照/相册选择 + 自动水印",
+      "source": {
+        "type": "local",
+        "path": "components/vue2-h5-file-upload.md"
+      },
+      "techStack": "vue2",
+      "scenes": ["upload", "h5", "mobile", "file"],
+      "componentScope": "common",
+      "keywords": ["上传", "文件上传", "图片上传", "附件", "vant", "h5", "移动端", "水印", "uploader", "vue2"],
+      "antiKeywords": ["pc", "element", "导入", "excel"]
+    },
+    {
+      "id": "vue2-pc-file-upload",
+      "name": "Vue2 PC 文件上传组件（Element Upload + 进度条）",
+      "description": "PC 端文件上传，支持 picture-card / text 模式",
+      "source": {
+        "type": "local",
+        "path": "components/vue2-pc-file-upload.md"
+      },
+      "techStack": "vue2",
+      "scenes": ["upload", "pc", "file"],
+      "componentScope": "common",
+      "keywords": ["上传", "文件上传", "图片上传", "附件", "element", "pc", "进度条", "upload", "vue2", "vue3"],
+      "antiKeywords": ["h5", "移动端", "vant", "导入", "excel"]
+    }
+  ]
+}
