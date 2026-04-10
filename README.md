@@ -47,7 +47,57 @@
 
 ## 使用方式
 
-将所需 skill 目录复制到目标项目的 `.cursor/skills/`：
+### Quick Start
+
+使用 `skills` CLI 可以直接从 GitHub 仓库安装单个 skill：
+
+```bash
+# 安装 fe-codegen-workbench
+npx skills add xiaoniuge36/niuge-skills --skill fe-codegen-workbench
+
+# 安装 frontend-design
+npx skills add xiaoniuge36/niuge-skills --skill frontend-design
+```
+
+也可以直接安装某个 skill 目录：
+
+```bash
+npx skills add https://github.com/xiaoniuge36/niuge-skills/tree/main/skills/fe-codegen-workbench
+```
+
+### 一键同步到当前项目
+
+推荐使用仓库内置脚本，把当前仓库中的某个 skill 同步到目标项目：
+
+```bash
+# 在目标项目目录执行：同步到 Cursor
+node ../niuge-skills/scripts/install-local-skills.mjs --tool cursor --skill fe-codegen-workbench
+
+# 在目标项目目录执行：同步到 Codex CLI
+node ../niuge-skills/scripts/install-local-skills.mjs --tool codex --skill fe-codegen-workbench
+
+# 在目标项目目录执行：同步到 Claude Code
+node ../niuge-skills/scripts/install-local-skills.mjs --tool claude --skill fe-codegen-workbench
+
+# 也可以在本仓库目录执行，并显式指定目标项目路径
+node scripts/install-local-skills.mjs --tool cursor --skill fe-codegen-workbench --target D:\\A-Project\\your-app
+```
+
+自动同步会执行以下动作：
+
+- 将指定 skill 复制到目标项目的 `.cursor/skills/`、`.codex/skills/` 或 `.claude/skills/`
+- 支持重复使用 `--skill` 安装多个 skill；省略 `--skill` 时会同步当前仓库的全部本地 skills
+- 记录 `.niuge-skill-sync.json`，下次同步时自动清理已删除的托管文件
+
+可用本地 skills 列表：
+
+```bash
+node scripts/install-local-skills.mjs --list
+```
+
+### 手动复制
+
+如果你不想用脚本，也可以手动复制到目标项目：
 
 ```bash
 # 仅复制统一工作台（推荐）
@@ -69,6 +119,8 @@ cp -r skills/* /path/to/your-project/.cursor/skills/
 组件与模板维护在 **`fe-codegen-workbench/references/component-registry.md`**，覆盖 React / Vue3 / Vue2 等模板；可后续抽离为独立 npm 包，由 workbench 仅保留使用说明。
 
 ## 同步上游 Skills
+
+这里的“上游同步”指的是把外部仓库里的成熟 skills 拉回当前 `niuge-skills` 仓库，而不是安装到业务项目。
 
 ```bash
 node scripts/sync-upstream-skills.mjs

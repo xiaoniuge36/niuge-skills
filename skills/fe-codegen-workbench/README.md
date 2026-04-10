@@ -101,8 +101,15 @@ fe-codegen-workbench/
 | `vercel-react-best-practices` | 知识库参考 | React 性能优化 58 条规则 |
 | `vue-best-practices` | 知识库参考 | Vue 3 响应式/组件/状态管理 |
 | `frontend-design` | 知识库参考 | 有设计稿时的 UI/UX 设计思维 |
+| `ui-ux-pro-max` | 可选增强 | 已安装且明确追求高保真 UI/UX 升级时再启用 |
 
 详见 [references/external-skills.md](references/external-skills.md)。
+
+## 设计类 Skill 整合建议
+
+- `frontend-design` 适合作为 `fe-codegen-workbench` 的条件化增强层：有原型图、品牌视觉稿、营销页或明确的视觉升级诉求时加载。
+- `ui-ux-pro-max` 更适合作为可选补强，而不是默认强依赖：它更偏社区经验和高保真设计规范，容易与既有设计系统或 B 端模板约束冲突。
+- 标准企业 CRUD、表单页、详情页场景下，优先遵循模板注册表、现有组件库和 `code-standards.md`，不要默认引入激进设计策略。
 
 ## 组件注册表架构
 
