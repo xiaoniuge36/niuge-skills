@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "Cursor Messenger": {
+      "command": "node",
+      "args": [
+        "c:\\Users\\69483\\.cursor\\extensions\\local.nshen-lu-dadan-1.4.1\\dist\\mcp-server.mjs"
+      ],
+      "env": {
+        "MESSENGER_DATA_DIR": "C:\\Users\\69483\\.cursor-mcp-messenger\\c8df28ee1193"
+      },
+      "autoApprove": [
+        "check_messages",
+        "send_progress",
+        "register_session"
+      ]
+    }
+  }
+}

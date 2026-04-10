@@ -16,18 +16,30 @@
 }
 ```
 
+## 企业级视觉约束
+
+生成的页面必须遵循**简洁、克制、数据密度优先**的企业级风格：
+
+- **使用 Ant Design 默认主题**，不得自定义 ConfigProvider 的 token（除非用户明确要求）
+- **不得使用渐变背景、毛玻璃、自定义阴影**
+- **不得使用装饰性 serif 字体**（如 Source Han Serif、Noto Serif）
+- **不得添加用户未要求的 UI 模块**（统计卡片、hero section、装饰 badge 等）
+- **圆角/间距/颜色一律使用 Ant Design 默认值**
+
 ## 组件优先级
 
-生成 React 代码时，优先使用 Pro Components，避免手写基础组件：
+生成 React 代码时，**必须**使用 Pro Components，严禁手写基础组件：
 
-| 场景 | 优先使用 | 避免手写 |
+| 场景 | 必须使用 | 严禁手写 |
 |------|---------|---------|
-| 数据表格 | `ProTable` | `Table` + 手动分页/搜索 |
+| 数据表格 | `ProTable`（request 模式） | `Table` + 手动分页/搜索/loading |
 | 弹窗表单 | `ModalForm` | `Modal` + `Form` 组合 |
 | 抽屉表单 | `DrawerForm` | `Drawer` + `Form` 组合 |
 | 表单控件 | `ProFormText/Select/Date` | `Form.Item` + `Input/Select` |
+| 搜索栏 | ProTable 内置 `search` | 手动拼 `<Form>` + `<Row>` + `<Col>` |
 | 动态表单 | `BetaSchemaForm` | 手动拼接 |
 | 描述列表 | `ProDescriptions` | `Descriptions` |
+| 状态渲染 | columns `valueEnum` + `status` | 手写 `<Tag>` + 自定义颜色 |
 
 ## React 性能最佳实践
 
@@ -80,6 +92,40 @@ const searchConfig = useMemo(() => ({ labelWidth: 'auto', span: 8 }), []);
 
 ## ProTable 最佳实践
 
+### 强制使用 request 模式
+
+**严禁** `dataSource={data}` + `loading={loading}` 的写法。ProTable 必须通过 `request` 属性获取数据，内置自动管理 loading、分页、搜索参数。
+
+```tsx
+<ProTable<DataItem>
+  headerTitle="数据管理"
+  columns={columns}
+  actionRef={actionRef}
+  rowKey="id"
+  request={async (params, sort, filter) => {
+    const { current: pageNum, pageSize, ...searchParams } = params;
+    const res = await fetchList({ pageNum, pageSize, ...searchParams });
+    return {
+      data: res.data.list,
+      total: res.data.total,
+      success: true,
+    };
+  }}
+  search={{ labelWidth: 'auto', span: 8 }}
+  pagination={{ defaultPageSize: 10, showSizeChanger: true }}
+/>
+```
+
+### 禁止清单
+
+| 禁止写法 | 原因 |
+|----------|------|
+| `dataSource={xxx}` | ProTable 退化为普通 Table，失去 request 能力 |
+| `search={false}` + 手动 `<Form>` | 破坏 ProTable 内置搜索体系 |
+| `options={false}` | 移除内置工具栏（刷新/密度/列设置） |
+| `toolbar={{ title: <长段描述> }}` | 添加不必要的装饰文案 |
+| 手写 `<Tag>` 渲染状态列 | 应使用 valueEnum + status |
+
 ### columns 配置模式
 
 ```tsx
@@ -88,14 +134,13 @@ const columns: ProColumns<DataItem>[] = [
     title: '名称',
     dataIndex: 'name',
     ellipsis: true,
-    formItemProps: { rules: [{ required: true }] },
   },
   {
     title: '状态',
     dataIndex: 'status',
     valueEnum: {
-      0: { text: '禁用', status: 'Default' },
-      1: { text: '启用', status: 'Success' },
+      enabled: { text: '启用', status: 'Success' },
+      disabled: { text: '禁用', status: 'Default' },
     },
   },
   {
@@ -108,7 +153,7 @@ const columns: ProColumns<DataItem>[] = [
   {
     title: '操作',
     valueType: 'option',
-    width: 180,
+    width: 150,
     render: (_, record) => [
       <a key="edit" onClick={() => handleEdit(record)}>编辑</a>,
       <a key="delete" onClick={() => handleDelete(record.id)}>删除</a>,
@@ -117,19 +162,17 @@ const columns: ProColumns<DataItem>[] = [
 ];
 ```
 
-### request 标准模式
+### columns 搜索控制
 
-```tsx
-request={async (params, sort, filter) => {
-  const { current: pageNum, pageSize, ...searchParams } = params;
-  const res = await fetchList({ pageNum, pageSize, ...searchParams });
-  return {
-    data: res.data.list,
-    total: res.data.total,
-    success: true,
-  };
-}}
-```
+通过 columns 属性控制哪些字段出现在搜索栏，**不要手动拼 Form**：
+
+| 属性 | 说明 |
+|------|------|
+| `hideInSearch: true` | 该列不出现在搜索栏 |
+| `hideInTable: true` | 该列不出现在表格 |
+| `valueType: 'select'` | 搜索栏自动渲染为下拉 |
+| `valueEnum` | 同时控制搜索栏下拉和表格标签渲染 |
+| `fieldProps` | 配置搜索栏控件属性（placeholder 等） |
 
 ## Hooks 设计模式
 
