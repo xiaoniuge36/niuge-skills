@@ -1,4 +1,4 @@
 interface:
   display_name: "FE Codegen Workbench"
   short_description: "统一调度前端代码生成：环境检测、需求分析、模板匹配、代码生成与审查"
-  default_prompt: "Use $fe-codegen-workbench for this request: follow SKILL.md step order strictly (environment → requirements → template match → generation → review). Use references/ and component-registry.md for template matching and code patterns. After generation run review step."
+  default_prompt: "Use $fe-codegen-workbench for this request: follow SKILL.md step order strictly (environment → requirements → template match → generation → review). Use references/template-matching.md and component-registry.json for primary/composed template matching, then use self-review-checklist.md during review."

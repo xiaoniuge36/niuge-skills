@@ -1,0 +1,10 @@
+{
+  "profileId": "vue2-vant-h5",
+  "techStack": "vue2",
+  "uiLibrary": "vant",
+  "uploaderComponent": "van-uploader",
+  "dialogComponent": "van-dialog",
+  "formPattern": "mobile-form",
+  "knowledgeBase": "../vue-knowledge.md",
+  "templatePrefix": "vue2-"
+}

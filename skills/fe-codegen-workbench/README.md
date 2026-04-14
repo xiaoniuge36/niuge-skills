@@ -64,6 +64,13 @@
 
 详见 [SKILL.md](SKILL.md) 和 [使用指南.md](使用指南.md)。
 
+## 模板来源约定
+
+- 本地模板以 `references/components/<template-id>/` 目录为唯一真源
+- 每个模板目录至少包含 `sample.md` 和示例代码文件
+- `component-registry.json` 负责索引、匹配元数据、组合关系和一致性锚点
+- `references/template-matching.md` 负责说明匹配规则、维护方式和 UI Profile
+
 ## 目录结构
 
 ```
@@ -72,24 +79,24 @@ fe-codegen-workbench/
 ├── README.md                                 # 本文件
 ├── 使用指南.md                                # 使用指南（模板提示词 + 示例）
 ├── agents/
-│   ├── agent.yaml                            # Agent 接口配置
-│   └── openai.yaml                           # OpenAI Agent 接口配置
+│   ├── agent.yaml                            # 通用 Agent 接口配置
+│   └── openai.yaml                           # OpenAI 兼容入口（与 agent.yaml 保持一致）
 └── references/
     ├── environment-setup.md                  # 步骤 1：环境检测与初始化
     ├── requirements-analysis.md              # 步骤 2：需求分析
-    ├── component-library.md                  # 步骤 3：UI 组件库匹配规则
     ├── component-registry.json               # 步骤 3：组件注册表索引（JSON）
-    ├── component-registry.md                 # 步骤 3：注册表说明文档
-    ├── components/                           # 步骤 3：独立组件定义（一文件一组件）
-    │   ├── react-*.md                        #   React 模板（10 个）
-    │   ├── vue3-*.md                         #   Vue 3 模板（2 个）
-    │   └── vue2-*.md                         #   Vue 2 模板（4 个）
+    ├── template-matching.md                  # 步骤 3：模板匹配规则 + 维护说明
+    ├── components/                           # 步骤 3：模板目录（一目录一个模板）
+    │   ├── react-*/                          #   React 模板目录（sample.md + 示例代码）
+    │   ├── vue3-*/                           #   Vue 3 模板目录（sample.md + 示例代码）
+    │   └── vue2-*/                           #   Vue 2 模板目录（sample.md + 示例代码）
+    ├── ui-profiles/                          # UI 框架 Profile 抽象
     ├── page-generation.md                    # 步骤 4：生成原则与文件顺序
     ├── code-standards.md                     # 步骤 4：编码规范
+    ├── self-review-checklist.md              # 步骤 5：结构化自检清单
     ├── react-antdpro-knowledge.md            # 步骤 4：React + AntdPro 知识库
     ├── vue-knowledge.md                      # 步骤 4：Vue 3 + Element Plus 知识库
-    ├── external-skills.md                    # 外部 Skills 集成指南
-    └── normative-source.md                   # 规范真源说明
+    └── external-skills.md                    # 外部 Skills 集成指南
 ```
 
 ## 集成的 Skills
@@ -113,13 +120,20 @@ fe-codegen-workbench/
 
 ## 组件注册表架构
 
-采用「JSON 索引 + 独立文件」模式，支持三种来源：
+采用「JSON 索引 + 模板目录」模式，支持三种来源：
 
 | source.type | 说明 | 状态 |
 |-------------|------|------|
-| `local` | 本地 `.md` 文件 | ✅ 已支持 |
+| `local` | 本地模板目录（`sample.md` + 示例代码） | ✅ 已支持 |
 | `npm` | npm 包组件 | 🔜 规划中 |
 | `remote` | 远程 URL | 🔜 规划中 |
+
+## 匹配增强
+
+- 组件匹配同时参考 `keywords`、`synonyms`、`antiKeywords`
+- 支持“1 个主模板 + 多个可组合模板”的拼装结果
+- 每个模板可声明 `priority`、`composableWith`、`consistencyAnchors`
+- UI 组件库能力通过 `references/ui-profiles/*.json` 抽象，降低未来替换成本
 
 ## 核心规则
 

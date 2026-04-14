@@ -1,0 +1,12 @@
+{
+  "profileId": "vue3-element-plus",
+  "techStack": "vue3",
+  "uiLibrary": "element-plus",
+  "tableComponent": "el-table",
+  "dialogComponent": "el-dialog",
+  "drawerComponent": "el-drawer",
+  "formComponent": "el-form",
+  "paginationComponent": "el-pagination",
+  "knowledgeBase": "../vue-knowledge.md",
+  "templatePrefix": "vue3-"
+}

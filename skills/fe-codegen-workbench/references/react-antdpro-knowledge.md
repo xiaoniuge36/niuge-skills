@@ -16,15 +16,9 @@
 }
 ```
 
-## 企业级视觉约束
+## Profile 说明
 
-生成的页面必须遵循**简洁、克制、数据密度优先**的企业级风格：
-
-- **使用 Ant Design 默认主题**，不得自定义 ConfigProvider 的 token（除非用户明确要求）
-- **不得使用渐变背景、毛玻璃、自定义阴影**
-- **不得使用装饰性 serif 字体**（如 Source Han Serif、Noto Serif）
-- **不得添加用户未要求的 UI 模块**（统计卡片、hero section、装饰 badge 等）
-- **圆角/间距/颜色一律使用 Ant Design 默认值**
+React 模板默认对应 `ui-profiles/react-antdpro.json`。视觉边界、禁止过度设计、类型与生成顺序等通用规则统一以 [code-standards.md](./code-standards.md) 为准，本文件只补充 React + Ant Design Pro 的特有实践。
 
 ## 组件优先级
 

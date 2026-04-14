@@ -25,10 +25,8 @@
 4. 自动修复 P0/P1 问题
 
 **审查清单引用**：
-- `references/code-quality-checklist.md` — 代码质量
-- `references/security-checklist.md` — 安全性
-- `references/testing-checklist.md` — 测试覆盖
-- `references/solid-checklist.md` — 设计原则
+- `references/self-review-checklist.md` — 结构化 PASS/FAIL 清单
+- `references/code-standards.md` — 规则真源
 
 ### 2. brainstorming（步骤 2 需求探索）
 

@@ -1,0 +1,14 @@
+{
+  "profileId": "react-antdpro",
+  "techStack": "react",
+  "uiLibrary": "ant-design-pro",
+  "tableComponent": "ProTable",
+  "modalFormComponent": "ModalForm",
+  "drawerFormComponent": "DrawerForm",
+  "descriptionComponent": "ProDescriptions",
+  "schemaFormComponent": "BetaSchemaForm",
+  "searchMode": "built-in-search",
+  "statusRendering": "valueEnum",
+  "knowledgeBase": "../react-antdpro-knowledge.md",
+  "templatePrefix": "react-"
+}

@@ -1,0 +1,12 @@
+{
+  "profileId": "vue2-element-ui",
+  "techStack": "vue2",
+  "uiLibrary": "element-ui",
+  "tableComponent": "el-table",
+  "dialogComponent": "el-dialog",
+  "drawerComponent": "el-drawer",
+  "formComponent": "el-form",
+  "paginationComponent": "el-pagination",
+  "knowledgeBase": "../vue-knowledge.md",
+  "templatePrefix": "vue2-"
+}

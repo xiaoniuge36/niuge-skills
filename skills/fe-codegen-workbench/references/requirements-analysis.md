@@ -25,6 +25,7 @@
 | 业务规则 | 默认值、限制、校验、权限 | "文件不超过5MB" |
 | 交互方式 | 弹窗/抽屉/跳转新页面 | "点击查看跳转详情页" |
 | 页面数量 | 用户描述的页面个数 | "包含列表、详情、编辑三个页面" |
+| 参考页面 | 参考、对齐、沿用、仿照 | "参考 src/pages/user/whitelist 的代码风格" |
 
 ## 2. 原型图分析
 
@@ -83,13 +84,40 @@
 | 文件/图片上传 | 上传组件 | "上传"/"附件"/"图片" |
 | 虚拟列表/大数据 | 大数据渲染 | "虚拟列表"/"8000条" |
 
+### 组合匹配规则
+
+当需求同时包含主页面和增强能力时，输出“1 个主模板 + 0-N 个组合模板”：
+
+| 需求组合 | 主模板 | 组合模板 |
+|---------|-------|---------|
+| 列表 + 导入 | `*-standard-list-crud` | `*-import-list-modal` |
+| 列表 + 批量编辑 | `*-standard-list-crud` | `react-batch-schema-form` |
+| 表单 + 上传 | `*-standard-form-page` / `*-drawer-form` | `*-pc-file-upload` / `vue2-h5-file-upload` |
+
+### 接口数据结构自动判断
+
+默认不要求用户显式声明“文件模式”或“JSON 模式”，按输入内容自动判断：
+
+| 输入信号 | 处理方式 |
+|---------|---------|
+| 出现 `接口类型：xxx.d.ts`、`接口：xxxApi` | 进入引用已有接口文件模式 |
+| 提供 JSON 结构 | 进入 JSON 骨架生成模式 |
+| 两者同时提供 | 以接口文件为主，JSON 作为补充字段 |
+| 两者都没有，但给了原型图/字段描述 | 从需求中提取字段并生成最小骨架 |
+
 ### 多页面拆分
 
 当需求涉及多个页面时，拆分为独立的需求单元。
 
 ## 5. 输出格式
 
-分析完成后输出结构化需求清单（含模板 ID，与 [component-registry.json](./component-registry.json) 中的注册表及 MCP `match_template` 对齐）。
+分析完成后输出结构化需求清单，至少包含：
+
+- `primaryTemplateId`
+- `composedTemplateIds`
+- `referencePages`
+- `dataSourceMode`（`existing-interface` / `json-schema` / `hybrid` / `prototype-derived`）
+- 字段、业务规则、交互方式
 
 ## 需要用户确认的决策点
 
