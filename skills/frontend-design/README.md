@@ -1,6 +1,6 @@
 ﻿# frontend-design
 
-这是一个从 Anthropic 官方仓库同步到本仓库的前端设计 skill，用来帮助 Agent 生成更有设计感、更有辨识度的前端页面和组件，而不是常见的模板化 AI UI。
+这是一个基于 Anthropic 官方 `frontend-design` skill 做本地增强的前端设计 skill，用来帮助 Agent 生成更有设计感、更有辨识度的前端页面和组件，而不是常见的模板化 AI UI。
 
 ## 适用场景
 
@@ -8,11 +8,17 @@
 - 对现有页面做视觉升级或重构
 - 生成更有明确风格方向的 React、HTML、CSS 前端代码
 
-## 上游来源
+## 本地增强
 
-- 仓库：`https://github.com/anthropics/skills`
-- 分支：`main`
-- 路径：`skills/frontend-design`
+当前版本额外吸收了 `Lucent-Snow/anti-default-output` 里“先识别默认输出，再主动偏离”的方法论，重点补了两类能力：
+
+- 在开始设计前先做一次 `anti-default pass`，显式识别常见 AI 前端默认套路
+- 增加前端场景下的默认输出陷阱清单，帮助在收尾前把“安全但没味道”的方案拉开
+
+## 参考来源
+
+- 基础版本：`https://github.com/anthropics/skills` -> `skills/frontend-design`
+- 增强参考：`https://github.com/Lucent-Snow/anti-default-output`
 
 ## 本地保留文件
 
@@ -21,6 +27,7 @@
 - `README.md`
 - `agents/agent.yaml`
 - `agents/openai.yaml`
+- `references/frontend-default-traps.md`
 
 ## 如何同步更新
 
@@ -38,6 +45,7 @@ node scripts/sync-upstream-skills.mjs
 
 ## 说明
 
-- 上游托管文件主要是 `SKILL.md` 和 `LICENSE.txt`
-- 本地中文说明只服务于仓库维护和阅读，不参与 skill 触发
+- `LICENSE.txt` 仍来自上游 Anthropic skill
+- `SKILL.md` 已加入本地增强，不建议无差别覆盖；后续同步 Anthropic 版本时应先对比再合并
+- 本地中文说明与 `references/` 只服务于仓库维护和阅读，不参与 skill 触发
 
