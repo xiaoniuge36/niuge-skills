@@ -1,0 +1,10 @@
+{
+  "repo": "https://github.com/Cocoon-AI/architecture-diagram-generator.git",
+  "branch": "main",
+  "sourcePath": "architecture-diagram",
+  "targetPath": "skills/architecture-diagram-generator",
+  "managedFiles": [
+    "SKILL.md",
+    "assets/template.html"
+  ]
+}

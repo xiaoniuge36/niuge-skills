@@ -38,6 +38,19 @@
         "agents/openai.yaml",
         ".upstream-sync.json"
       ]
+    },
+    {
+      "name": "architecture-diagram-generator",
+      "repo": "https://github.com/Cocoon-AI/architecture-diagram-generator.git",
+      "branch": "main",
+      "sourcePath": "architecture-diagram",
+      "targetPath": "skills/architecture-diagram-generator",
+      "exclude": [
+        "README.md",
+        "agents/agent.yaml",
+        "agents/openai.yaml",
+        ".upstream-sync.json"
+      ]
     }
   ]
 }

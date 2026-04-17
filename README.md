@@ -26,6 +26,7 @@ AI Agent Skills 集合，以**企业级前端代码生成**为核心能力，同
 | [frontend-design](./skills/frontend-design/) | 前端设计与视觉增强 | Anthropic |
 | [webapp-testing](./skills/webapp-testing/) | Playwright 自动化测试 | Anthropic |
 | [find-skills](./skills/find-skills/) | 技能发现与推荐 | 社区 |
+| [architecture-diagram-generator](./skills/architecture-diagram-generator/) | 系统架构图、网络拓扑图与技术关系图生成 | Cocoon AI |
 
 ## 安装方式
 
@@ -131,6 +132,7 @@ cp -r skills/fe-codegen-workbench /path/to/your-project/.cursor/skills/
 ```bash
 node scripts/sync-upstream-skills.mjs
 node scripts/sync-upstream-skills.mjs --skill frontend-design
+node scripts/sync-upstream-skills.mjs --skill architecture-diagram-generator
 ```
 
 ## 目录结构

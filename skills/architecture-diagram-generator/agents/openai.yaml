@@ -1,0 +1,4 @@
+interface:
+  display_name: "Architecture Diagram Generator"
+  short_description: "Generate Chinese-first architecture diagrams from code, docs, and project context"
+  default_prompt: "Use $architecture-diagram-generator to analyze this project and generate a Simplified Chinese architecture diagram for the current request. Default all visible diagram text to Chinese unless the user explicitly asks for another language."
