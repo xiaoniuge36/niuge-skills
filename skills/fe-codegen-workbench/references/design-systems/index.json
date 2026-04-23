@@ -1,0 +1,144 @@
+{
+  "schemaVersion": "1.0",
+  "source": "https://getdesign.md/",
+  "updatedAt": "2026-04-23",
+  "ttlDays": 7,
+  "loadStrategy": "remote-first",
+  "notes": [
+    "薄索引：只存 Agent 做推荐所需的最小字段（id/name/tagline/detailUrl/previewColor）。",
+    "不打标签，不存分类。匹配逻辑由 Agent 基于 tagline 自行判断。",
+    "加载策略：远程优先 + 本地降级。每次进入步骤 2.5 时优先从 source 实时抓取并覆盖本文件；远程失败时本文件才作为降级缓存使用。",
+    "updatedAt 字段用于记录本地缓存最后一次成功同步远程的时间，不作为'是否使用远程'的判据。",
+    "单个 DESIGN.md 同样远程优先：每次进入步骤 3.5 优先抓 detailUrl 覆盖 references/design-systems/<id>/DESIGN.md；远程失败时用本地缓存降级。",
+    "任务内单次抓取：同一生成任务内同一资源只抓一次，不重复请求。跨任务总是重新拉取。",
+    "`刷新设计库` 指令可强制触发一次远程抓取并覆盖本文件；`离线模式` 指令可跳过远程只用本地缓存。"
+  ],
+  "brands": [
+    {
+      "id": "linear",
+      "name": "Linear",
+      "tagline": "Project management. Ultra-minimal, precise, purple accent.",
+      "detailUrl": "https://getdesign.md/linear.app/design-md",
+      "previewColor": "#5E6AD2"
+    },
+    {
+      "id": "notion",
+      "name": "Notion",
+      "tagline": "All-in-one workspace. Warm minimalism, serif headings, soft surfaces.",
+      "detailUrl": "https://getdesign.md/notion/design-md",
+      "previewColor": "#191919"
+    },
+    {
+      "id": "stripe",
+      "name": "Stripe",
+      "tagline": "Payment infrastructure. Signature purple gradients, weight-300 elegance.",
+      "detailUrl": "https://getdesign.md/stripe/design-md",
+      "previewColor": "#635BFF"
+    },
+    {
+      "id": "vercel",
+      "name": "Vercel",
+      "tagline": "Frontend deployment. Black and white precision, Geist font.",
+      "detailUrl": "https://getdesign.md/vercel/design-md",
+      "previewColor": "#000000"
+    },
+    {
+      "id": "cursor",
+      "name": "Cursor",
+      "tagline": "AI-first code editor. Sleek dark interface, gradient accents.",
+      "detailUrl": "https://getdesign.md/cursor/design-md",
+      "previewColor": "#0E0E0E"
+    },
+    {
+      "id": "claude",
+      "name": "Claude",
+      "tagline": "Anthropic's AI assistant. Warm terracotta accent, clean editorial layout.",
+      "detailUrl": "https://getdesign.md/claude/design-md",
+      "previewColor": "#D97757"
+    },
+    {
+      "id": "supabase",
+      "name": "Supabase",
+      "tagline": "Open-source Firebase alternative. Dark emerald theme, code-first.",
+      "detailUrl": "https://getdesign.md/supabase/design-md",
+      "previewColor": "#3ECF8E"
+    },
+    {
+      "id": "resend",
+      "name": "Resend",
+      "tagline": "Email API. Minimal dark theme, monospace accents.",
+      "detailUrl": "https://getdesign.md/resend/design-md",
+      "previewColor": "#000000"
+    },
+    {
+      "id": "mintlify",
+      "name": "Mintlify",
+      "tagline": "Documentation platform. Clean, green-accented, reading-optimized.",
+      "detailUrl": "https://getdesign.md/mintlify/design-md",
+      "previewColor": "#16A34A"
+    },
+    {
+      "id": "posthog",
+      "name": "PostHog",
+      "tagline": "Product analytics. Playful hedgehog branding, developer-friendly dark UI.",
+      "detailUrl": "https://getdesign.md/posthog/design-md",
+      "previewColor": "#1D4AFF"
+    },
+    {
+      "id": "sentry",
+      "name": "Sentry",
+      "tagline": "Error monitoring. Dark dashboard, data-dense, pink-purple accent.",
+      "detailUrl": "https://getdesign.md/sentry/design-md",
+      "previewColor": "#EA1364"
+    },
+    {
+      "id": "raycast",
+      "name": "Raycast",
+      "tagline": "Productivity launcher. Sleek dark chrome, vibrant gradient accents.",
+      "detailUrl": "https://getdesign.md/raycast/design-md",
+      "previewColor": "#FF6363"
+    },
+    {
+      "id": "shopify",
+      "name": "Shopify",
+      "tagline": "E-commerce platform. Dark-first cinematic, neon green accent, ultra-light type.",
+      "detailUrl": "https://getdesign.md/shopify/design-md",
+      "previewColor": "#96BF48"
+    },
+    {
+      "id": "airbnb",
+      "name": "Airbnb",
+      "tagline": "Travel marketplace. Warm coral accent, photography-driven, rounded UI.",
+      "detailUrl": "https://getdesign.md/airbnb/design-md",
+      "previewColor": "#FF5A5F"
+    },
+    {
+      "id": "figma",
+      "name": "Figma",
+      "tagline": "Collaborative design tool. Vibrant multi-color, playful yet professional.",
+      "detailUrl": "https://getdesign.md/figma/design-md",
+      "previewColor": "#F24E1E"
+    },
+    {
+      "id": "framer",
+      "name": "Framer",
+      "tagline": "Website builder. Bold black and blue, motion-first, design-forward.",
+      "detailUrl": "https://getdesign.md/framer/design-md",
+      "previewColor": "#0055FF"
+    },
+    {
+      "id": "intercom",
+      "name": "Intercom",
+      "tagline": "Customer messaging. Friendly blue palette, conversational UI patterns.",
+      "detailUrl": "https://getdesign.md/intercom/design-md",
+      "previewColor": "#1F6FEB"
+    },
+    {
+      "id": "coinbase",
+      "name": "Coinbase",
+      "tagline": "Crypto exchange. Clean blue identity, trust-focused, institutional feel.",
+      "detailUrl": "https://getdesign.md/coinbase/design-md",
+      "previewColor": "#0052FF"
+    }
+  ]
+}

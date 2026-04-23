@@ -21,9 +21,15 @@
 4. components/*.tsx
 5. index.tsx / index.vue
 6. index.less（仅写必要的业务样式覆盖）
+7. 主题层文件（仅当 selectedBrandId 非空且 3.5 加载成功）
+   - React + AntD Pro → src/theme/token.ts
+   - Vue 3 + Element Plus → src/theme/vars.scss
+   - Tailwind 项目 → tailwind.config.ts 扩展
+8. 项目根 DESIGN.md 副本（仅当 selectedBrandId 非空）
 ```
 
 **禁止先生成组件再补 hooks。**
+**主题层必须在业务代码生成完成后追加，不得穿插生成。** 详细主题文件模板见 [design-md-integration.md](./design-md-integration.md) 步骤 4 章节。
 
 ### Service 层生成规则
 

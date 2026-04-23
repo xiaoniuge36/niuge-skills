@@ -37,6 +37,14 @@
   - FAIL 条件：存在 `console.log`、`debugger`、注释掉的临时代码
 - [ ] 未滥用 `any`
   - FAIL 条件：可显式定义类型的地方仍使用 `any`
+- [ ] **主题文件已生成**（仅当 `selectedBrandId` 非空）
+  - FAIL 条件：缺少 `src/theme/token.ts`（React）/ `src/theme/vars.scss`（Vue3）/ `tailwind.config.ts` 扩展（Tailwind），或 `colorPrimary` 为空
+- [ ] **ConfigProvider / main.ts 已接入主题**（仅当 `selectedBrandId` 非空）
+  - FAIL 条件：React 项目未在 `ConfigProvider` 绑定主题 token；Vue 项目未 `import '@/theme/vars.scss'`
+- [ ] **项目根 DESIGN.md 已生成**（仅当 `selectedBrandId` 非空）
+  - FAIL 条件：项目根缺少 `DESIGN.md` 副本
+- [ ] **业务代码未硬编码 DESIGN.md 色值/字体**（仅当 `selectedBrandId` 非空）
+  - FAIL 条件：`src/pages/**/*.{tsx,vue,less,scss}` 中出现硬编码色值/字体，不通过主题 token 间接引用
 
 ## P2
 

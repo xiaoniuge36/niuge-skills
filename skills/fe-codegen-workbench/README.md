@@ -54,13 +54,106 @@
 
 ## 核心流程
 
-```
-[1] 环境检测 → [2] 需求分析 → [3] 模板匹配 → [4] 页面生成 → [5] 代码审查
+### 整体流程图（Mermaid，GitHub 可直接渲染）
+
+```mermaid
+flowchart TD
+    Start([用户输入需求]) --> S1[1. 环境检测<br/>扫描 package.json / 技术栈 / UI 库]
+    S1 --> NewProj{项目存在?}
+    NewProj -- 否 --> Create[默认创建 React + TS + AntdPro<br/>用户确认技术栈]
+    NewProj -- 是 --> S2
+    Create --> S2[2. 需求分析<br/>提取: 页面类型 / 字段 / 业务规则<br/>额外提取: designSignal 风格信号]
+    S2 --> GateType{是否新建任务<br/>且未显式跳过?}
+
+    GateType -- 是 --> S25[2.5 设计推荐节点]
+    GateType -- 否<br/>增量修改 / 显式默认 --> S3
+
+    S25 --> Fetch[🌐 远程优先抓 getdesign.md<br/>覆盖本地 index.json]
+    Fetch -- 远程失败 --> Local[💾 读本地 index.json<br/>+ warning 提示]
+    Fetch -- 成功 --> Recommend
+    Local -- 本地也缺失 --> Skip25[静默跳过 2.5<br/>走 AntD 默认]
+    Local --> Recommend
+
+    Recommend[🎯 基于需求+风格词<br/>主动推荐 3 个品牌 + 1 个不使用]
+    Recommend --> Explicit{用户显式品牌<br/>或本地路径?}
+    Explicit -- 是 --> Direct[⚡ 跳过 ask_question<br/>直接使用指定品牌/路径]
+    Explicit -- 否 --> Ask[ask_question:<br/>1. Linear / 2. Notion / 3. Stripe<br/>4. ⬜ 不使用品牌 兜底]
+    Ask --> UserPick{用户选择}
+    UserPick -- 选品牌 --> SetBrand[selectedBrandId = brandId]
+    UserPick -- 选不使用 / 超时 --> NullBrand[selectedBrandId = null]
+    Direct --> SetBrand
+
+    NullBrand --> S3
+    Skip25 --> S3
+    SetBrand --> S35[3.5 DESIGN.md 加载<br/>🌐 远程优先抓 detailUrl<br/>解析 color/font/radius]
+    S35 -- 远程失败 --> LocalMd[💾 读本地 DESIGN.md + warning]
+    LocalMd -- 本地也缺失 --> Degrade[降级 AntD<br/>跳过主题层]
+    S35 --> S3
+    LocalMd --> S3
+    Degrade --> S3
+
+    S3[3. 模板匹配<br/>按技术栈过滤 component-registry.json] --> TplHit{命中模板?}
+    TplHit -- 是 --> S4
+    TplHit -- 否 --> AskTpl[暂停询问: 用最近模板? 自由生成? 用户自处理?]
+    AskTpl --> S4
+
+    S4[4. 页面生成] --> G1[types.ts]
+    G1 --> G2[hooks/*.ts]
+    G2 --> G3[components/*.tsx]
+    G3 --> G4[index.tsx]
+    G4 --> G5[index.less]
+    G5 --> ThemeCheck{selectedBrandId<br/>非空?}
+    ThemeCheck -- 是 --> G6[src/theme/token.ts<br/>ConfigProvider 注入<br/>项目根 DESIGN.md 复制]
+    ThemeCheck -- 否 --> S5
+    G6 --> S5
+
+    S5[5. 代码审查<br/>code-review-expert 深度审查<br/>+ P0/P1/P2 自检] --> ThemeReview{selectedBrandId<br/>非空?}
+    ThemeReview -- 是 --> ThemeAudit[追加主题合规审查<br/>• 主题文件已生成<br/>• ConfigProvider 已挂入<br/>• 业务代码无硬编码色值<br/>• 项目根 DESIGN.md 已复制]
+    ThemeReview -- 否 --> End
+    ThemeAudit --> End([✅ 交付给用户])
+
+    classDef step fill:#4a90e2,stroke:#2c5f8c,color:#fff
+    classDef designStep fill:#e27d4a,stroke:#8c4a2c,color:#fff
+    classDef gate fill:#f5c842,stroke:#9c7a08,color:#333
+    classDef terminal fill:#6ab04c,stroke:#388a1e,color:#fff
+    class S1,S2,S3,S4,S5 step
+    class S25,Fetch,Recommend,Ask,S35,G6,ThemeAudit designStep
+    class GateType,Explicit,UserPick,TplHit,ThemeCheck,ThemeReview,NewProj gate
+    class Start,End terminal
 ```
 
-步骤为强制顺序执行，不可跳步。
+### ASCII 简版（纯文本阅读）
+
+```
+[1] 环境检测 → [2] 需求分析 → {是否新建+未跳过?}
+                                 │
+                          ┌──────┴──────┐
+                          是             否
+                          │              │
+                        [2.5]            ↓
+                  设计推荐(3+1)        跳过 2.5
+                  🌐 远程优先拉 index
+                          │              │
+                   ┌──────┴──────┐       │
+              选品牌            选不使用  │
+                   │              │      │
+                 [3.5]            ↓      ↓
+             DESIGN.md 加载       ────────────→ [3] 模板匹配 → [4] 页面生成 → [5] 代码审查
+             🌐 远程优先拉 md                              │                      │
+                   │                                    (若选品牌)            (若选品牌)
+                   └─────────────────────────→ 追加主题层文件    + 主题合规审查
+```
+
+### 关键规则
+
+- 步骤 1–5 为**强制顺序执行**，不可跳步。
+- **步骤 2.5 为交互式默认链路**：新建页面 / 新建项目任务默认进入 2.5 节点，主动推荐 3 个品牌 + 1 个"不使用品牌"兜底选项，给用户一次选择机会；用户选"不使用"即走默认样式。显式说"按默认 / B 端标准" 或增量修改任务自动跳过 2.5。
+- **步骤 3.5 仅当 `selectedBrandId` 非空时触发**：从 getdesign.md 抓取对应 DESIGN.md 生成主题层。
+- 若触发设计链路，业务代码仍 100% 按模板拼装，视觉差异只落在单独生成的"主题层"文件中，**业务代码零硬编码色值/字体**。
 
 **技术栈策略**：现有项目自动检测技术栈并加载对应知识库；新项目默认 React + TypeScript + Ant Design Pro。
+
+**设计系统策略**（见 [DESIGN.md 集成](#designmd-集成可选链路) 小节）：与 [getdesign.md](https://getdesign.md/) 打通，**远程优先 + 本地降级**——默认联网拉取最新设计系统；断网时才回退本地缓存；缓存也缺失时静默降级为 AntD 默认主题。
 
 详见 [SKILL.md](SKILL.md) 和 [使用指南.md](使用指南.md)。
 
@@ -83,7 +176,12 @@ fe-codegen-workbench/
 │   └── openai.yaml                           # OpenAI 兼容入口（与 agent.yaml 保持一致）
 └── references/
     ├── environment-setup.md                  # 步骤 1：环境检测与初始化
-    ├── requirements-analysis.md              # 步骤 2：需求分析
+    ├── requirements-analysis.md              # 步骤 2：需求分析（含 designSignal 抽取）
+    ├── design-md-integration.md              # 步骤 2.5/3.5/4/5：DESIGN.md 集成规则
+    ├── design-systems/                       # 步骤 2.5/3.5：设计系统薄索引 + 本地缓存
+    │   ├── README.md                         #   加载策略（远程优先 + 本地降级）
+    │   ├── index.json                        #   69+ 品牌薄索引（id/name/tagline/detailUrl）
+    │   └── <brand-id>/                       #   按需缓存的单个 DESIGN.md
     ├── component-registry.json               # 步骤 3：组件注册表索引（JSON）
     ├── template-matching.md                  # 步骤 3：模板匹配规则 + 维护说明
     ├── components/                           # 步骤 3：模板目录（一目录一个模板）
@@ -91,9 +189,9 @@ fe-codegen-workbench/
     │   ├── vue3-*/                           #   Vue 3 模板目录（sample.md + 示例代码）
     │   └── vue2-*/                           #   Vue 2 模板目录（sample.md + 示例代码）
     ├── ui-profiles/                          # UI 框架 Profile 抽象
-    ├── page-generation.md                    # 步骤 4：生成原则与文件顺序
+    ├── page-generation.md                    # 步骤 4：生成原则与文件顺序（含主题层）
     ├── code-standards.md                     # 步骤 4：编码规范
-    ├── self-review-checklist.md              # 步骤 5：结构化自检清单
+    ├── self-review-checklist.md              # 步骤 5：结构化自检清单（含主题合规审查）
     ├── react-antdpro-knowledge.md            # 步骤 4：React + AntdPro 知识库
     ├── vue-knowledge.md                      # 步骤 4：Vue 3 + Element Plus 知识库
     └── external-skills.md                    # 外部 Skills 集成指南
@@ -105,18 +203,77 @@ fe-codegen-workbench/
 |-------|---------|------|
 | `code-review-expert` | 深度集成 | 步骤 5 代码审查（P0-P3 findings） |
 | `brainstorming` | 深度集成 | 步骤 2 需求模糊时探索 |
+| `getdesign.md` 集成 | 深度集成（可选链路） | 步骤 2.5/3.5/4/5 的设计系统推荐与落地（详见下节） |
 | `vercel-react-best-practices` | 知识库参考 | React 性能优化 58 条规则 |
 | `vue-best-practices` | 知识库参考 | Vue 3 响应式/组件/状态管理 |
-| `frontend-design` | 知识库参考 | 有设计稿时的 UI/UX 设计思维 |
+| `frontend-design` | 知识库参考 | 有设计稿时的 UI/UX 设计思维（与 DESIGN.md 链路互斥，不建议同时启用） |
 | `ui-ux-pro-max` | 可选增强 | 已安装且明确追求高保真 UI/UX 升级时再启用 |
 
 详见 [references/external-skills.md](references/external-skills.md)。
 
 ## 设计类 Skill 整合建议
 
-- `frontend-design` 适合作为 `fe-codegen-workbench` 的条件化增强层：有原型图、品牌视觉稿、营销页或明确的视觉升级诉求时加载。
+- **DESIGN.md 链路（推荐）**：需要品牌化视觉时优先走 `getdesign.md` 集成，由 Agent 基于用户风格诉求推荐并自动落地主题层，见下一节。
+- `frontend-design` 适合作为 `fe-codegen-workbench` 的条件化增强层：有原型图、品牌视觉稿、营销页或明确视觉升级诉求，但**不走 DESIGN.md 链路**时加载。两者不建议同时启用。
 - `ui-ux-pro-max` 更适合作为可选补强，而不是默认强依赖：它更偏社区经验和高保真设计规范，容易与既有设计系统或 B 端模板约束冲突。
 - 标准企业 CRUD、表单页、详情页场景下，优先遵循模板注册表、现有组件库和 `code-standards.md`，不要默认引入激进设计策略。
+
+## DESIGN.md 集成（可选链路）
+
+本工作台与 [getdesign.md](https://getdesign.md/) 深度整合，使得生成代码时可以可选地套用 Linear、Stripe、Notion 等 69+ 品牌的设计系统。
+
+### 四条主要使用路径
+
+| 路径 | 触发条件 | Agent 行为 |
+|------|---------|-----------|
+| 🟢 **默认交互推荐**（新建任务默认走此路径） | 新建页面 / 项目 + 无显式品牌 + 未显式跳过 | 主动从 `index.json` 推荐 3 个品牌 + "不使用品牌" 选项，用户一键选择 |
+| 🔵 **显式指定品牌** | _"用 Linear 风格做 XX"_ | 跳过推荐对话，直接加载对应 DESIGN.md，生成主题层 |
+| 🟡 **用户显式跳过** | _"按默认 / B 端标准 / 不用设计系统"_ | 自动跳过 2.5，走现状 AntD 默认，和原工作流 100% 等同 |
+| 🟠 **增量修改任务** | _"加一列字段 / 修改按钮"_ 等改已有页面 | 自动跳过 2.5，沿用当前主题不打扰；除非用户同时明说换主题 |
+
+**兜底选项永远存在**：进入推荐节点时，ask_question 的第 4 项永远是 _"不使用品牌（使用默认 Ant Design 样式）"_，用户一秒即可退出设计链路。
+
+### 远程优先 + 本地降级
+
+每次进入设计链路时：
+
+```
+🌐 第 1 层：远程抓取 getdesign.md
+    ├─ 成功 → 覆盖本地缓存 → 使用最新数据 ✓
+    └─ 失败 ↓
+💾 第 2 层：读本地缓存
+    ├─ 存在 → 使用缓存 + warning "使用本地缓存（last updated: ...）"
+    └─ 缺失 ↓
+❌ 第 3 层：静默降级默认 AntD，业务代码继续正常生成
+```
+
+- 默认假设用户有网；本地 `references/design-systems/` 仅作断网兜底
+- 任务内单次抓取（避免重复请求），跨任务总是重拉（保证最新）
+- 通过 `刷新设计库` 指令可主动强制重抓
+
+### 视觉落地方式（关键不变量）
+
+| 文件 | 作用 | 技术栈 |
+|------|------|-------|
+| `src/theme/token.ts` | 主题层（单一色值/字体/spacing 源） | React |
+| `src/theme/vars.scss` | 主题层 | Vue 3 |
+| `tailwind.config.ts` | 主题层扩展 | Tailwind |
+| 项目根 `DESIGN.md` | 上下文锚点（供后续生成参考） | 所有 |
+
+**业务代码 `.tsx` / `.vue` 零硬编码色值/字体**，所有视觉通过 token 间接引用。
+
+### 用户指令速查
+
+| 指令 | 作用 |
+|------|------|
+| `用 <品牌> 风格做 <需求>` | 跳过推荐直接应用某品牌 |
+| `列出设计库` | 展示全部可选品牌（含预览色块） |
+| `刷新设计库` / `更新设计库` | 主动远程抓取覆盖本地 |
+| `离线模式` / `强制使用缓存` | 跳过远程仅用本地 |
+| `换成 <品牌> 风格` | 切换主题（仅改 theme 层） |
+| `回到默认` | 恢复 AntD 默认（删 theme 层） |
+
+详细规范见 [references/design-md-integration.md](references/design-md-integration.md) 与 [references/design-systems/README.md](references/design-systems/README.md)。
 
 ## 组件注册表架构
 
@@ -140,8 +297,10 @@ fe-codegen-workbench/
 - **hooks / composables 优先**：先生成数据处理层，再生成 UI 层
 - **全局类型禁止 import**：`global.d.ts` 中的类型直接使用
 - **禁止 mock**：不生成任何假数据
-- **文件生成顺序**：`types.ts` → `hooks/` → `components/` → `index.tsx` → `index.less`
+- **文件生成顺序**：`types.ts` → `hooks/` → `components/` → `index.tsx` → `index.less` → （若选品牌）`src/theme/*` + 项目根 `DESIGN.md`
 - **技术栈知识库驱动**：根据检测到的技术栈自动加载对应知识库
+- **业务代码零硬编码视觉**：色值/字体/spacing 统一走主题层 token，即使在主题启用场景下业务代码仍不感知具体品牌
+- **远程优先（设计链路）**：DESIGN.md 链路一旦启用，索引和 DESIGN.md 都优先从 getdesign.md 实时抓取；远程失败才回退本地缓存，缓存也缺失时静默降级默认 AntD
 
 ## 安装
 

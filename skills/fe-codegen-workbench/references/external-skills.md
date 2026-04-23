@@ -126,8 +126,23 @@
 | 场景 | 推荐 |
 |------|------|
 | 标准 B 端列表、表单、详情、CRUD | 不默认加载设计类 Skill，优先复用现有设计系统与模板 |
-| 有原型图 / 品牌视觉稿 / 营销页 / 视觉升级诉求 | 加载 `frontend-design` |
+| 用户显式要求某品牌风格（"linear 风"、"stripe 感"） | 走 **DESIGN.md 链路**（见 [design-md-integration.md](./design-md-integration.md)），**不** 同时加载 `frontend-design` |
+| 用户提供自定义 DESIGN.md 文件 | 走 **DESIGN.md 链路**，本地读取，不抓取 getdesign.md |
+| 用户自然语言描述风格（"年轻、赛博、冷淡克制"） | 步骤 2.5 触发设计推荐，从 `references/design-systems/index.json` 中推 3+1；**不** 同时加载 `frontend-design` |
+| 有原型图 / 品牌视觉稿 / 营销页 / 视觉升级诉求 | 加载 `frontend-design`（不走 DESIGN.md 链路） |
 | 需要进一步做高保真 UI/UX 升级，且本地已有可信社区 Skill | `frontend-design` + `ui-ux-pro-max` 叠加参考 |
+
+### DESIGN.md 链路 vs frontend-design：如何取舍
+
+| 对比项 | DESIGN.md 链路 | `frontend-design` |
+|--------|---------------|-------------------|
+| 视觉规范来源 | 现成品牌（getdesign.md 69 个）或用户自己的 DESIGN.md | AI 按原则自由设计 |
+| 结果稳定性 | 高（规范驱动，可复现） | 中（AI 判断，略有随机） |
+| 业务代码影响 | 零（只动主题层 token） | 中-高（可能影响组件样式写法） |
+| 适用场景 | 用户想要"现成品牌风格"或"基于规范的视觉一致性" | 用户有原型图但没成型设计系统，或追求独特创意 |
+| 推荐组合使用 | ❌ 不推荐同时启用（规则冲突） | — |
+
+**默认优先级**：若用户风格诉求能被 DESIGN.md 链路覆盖（品牌/关键词），优先走 DESIGN.md；否则再考虑 `frontend-design`。
 
 ## 安装建议
 

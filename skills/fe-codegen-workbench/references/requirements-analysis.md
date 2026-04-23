@@ -109,7 +109,51 @@
 
 当需求涉及多个页面时，拆分为独立的需求单元。
 
-## 5. 输出格式
+## 5. 设计风格信号抽取（步骤 2.5 依据）
+
+从用户需求中额外抽取"设计风格信号"，作为步骤 2.5（设计推荐）的触发依据。**即便用户不提风格词，也要完成此项抽取，抽取结果可为空。**
+
+### 5.1 风格信号类别
+
+| 信号类别 | 识别关键词 | 示例 |
+|---------|-----------|------|
+| **显式品牌名** | linear / notion / stripe / vercel / cursor / claude / supabase / airbnb / shopify 等 index.json 中的品牌名 | "用 linear 风格做个看板" |
+| **本地 DESIGN.md 路径** | "设计参考 xxx.md"、"按 xxx/DESIGN.md" | "设计参考 ./my-brand.md" |
+| **自然语言风格词** | 暗色/dark、极简/minimal、高级/premium、年轻/playful、编辑感/editorial、数据密集/dense、渐变/neon、赛博/朋克、冷淡/克制 等 | "做得年轻一点 / 要点赛博感" |
+| **明确走默认** | "B 端标准"、"按默认"、"按组件库风格"、"别搞花里胡哨的" | "就是普通后台，按默认风格" |
+
+### 5.2 输出字段（追加到步骤 2 结构化需求里）
+
+```json
+{
+  "designSignal": {
+    "explicitBrandId": "<index.json 中的 brand id，或 null>",
+    "localDesignMdPath": "<本地路径，或 null>",
+    "styleKeywords": ["暗色", "数据密集"],
+    "forceDefault": false,
+    "productCategory": "b2b-admin | consumer | dashboard | docs | h5 | landing | ai-product"
+  }
+}
+```
+
+### 5.3 设计推荐触发规则（供步骤 2.5 使用）
+
+**默认策略**：新建任务（非增量修改） + `forceDefault = false` → **默认进入 2.5 推荐节点**，给用户一次 3+1 的交互选择机会。以下是细化分支：
+
+| 字段状态 | 步骤 2.5 行为 |
+|----------|---------------|
+| `explicitBrandId` 非空 | **强触发·跳过推荐对话**，直接用该品牌进入 3.5 |
+| `localDesignMdPath` 非空 | **强触发·跳过推荐对话 + 跳过远程抓取**，直接读本地文件进入 3.5 |
+| `forceDefault = true` | **显式跳过**，记录 `selectedBrandId = null`，直接进入步骤 3 |
+| **增量修改任务**（主 SKILL 增量修改模式触发） | **默认跳过** 2.5，沿用现有主题；除非用户同时明说换主题 |
+| `styleKeywords` 非空 + 上述均不命中 | **主动推荐（强匹配）**，按风格词语义从 `brands[]` 选 Top 3 + "不使用"兜底 |
+| `styleKeywords` 为空 + 新建任务 | **主动推荐（通用匹配）**，按 `productCategory` 选 3 个普适品牌 + "不使用"兜底，对 `b2b-admin` 类推荐时 `defaultOption` 置顶引导 |
+
+**兜底选项永远存在**：无论进入 2.5 的是"强匹配"还是"通用匹配"，ask_question 都必须包含第 4 项 _"不使用品牌（使用默认 Ant Design 样式）"_，用户一秒即可退出。
+
+**超时处理**：ask_question 无响应 / 用户回复"算了/跳过" → 视同选第 4 项（`selectedBrandId = null`），继续流程不打扰。
+
+## 6. 输出格式
 
 分析完成后输出结构化需求清单，至少包含：
 
@@ -118,6 +162,7 @@
 - `referencePages`
 - `dataSourceMode`（`existing-interface` / `json-schema` / `hybrid` / `prototype-derived`）
 - 字段、业务规则、交互方式
+- `designSignal`（第 5 节结构）
 
 ## 需要用户确认的决策点
 
@@ -125,3 +170,4 @@
 2. 字段不完整
 3. 业务规则模糊
 4. 设计稿缺失细节
+5. `designSignal.styleKeywords` 非空但无 explicitBrandId → 是否进入步骤 2.5 设计推荐
