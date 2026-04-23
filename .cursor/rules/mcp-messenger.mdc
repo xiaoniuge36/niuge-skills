@@ -1,32 +1,44 @@
 ---
-description: "自动调用 Messenger MCP 检查待发送消息"
+description: "Use Messenger MCP to receive queued plugin messages and push final replies back to the extension"
 globs: "**/*"
 alwaysApply: true
 ---
 
-# MCP 工具调用规则
+# Messenger MCP Rules
 
-1. 每轮对话回复**完整输出后**，最后一步必须调用 `check_messages`，适用于 Agent/Plan/Debug/Ask 所有模式，无例外
-2. `check_messages` 会**阻塞等待**直到用户发来新消息或收到心跳保活信号；收到后处理并回复，然后再次调用 `check_messages`，形成永续循环
-3. 严禁在回合开始时或回复未完成时调用 `check_messages`；唯一豁免：用户明确要求结束对话
-4. 当 `check_messages` 返回内容以「心跳保活信号已收到」开头时，这是扩展自动发送的保活信号。收到后**严禁向用户输出任何内容**，直接再次调用 `check_messages`（带相同 session_tag）继续等待
-5. 当 `check_messages` 返回「暂无新消息（等待超时）」时，同样**严禁向用户输出任何内容**，直接再次调用 `check_messages` 继续等待
-6. 需要用户做选择或确认时（选方案、选框架、确认操作等），必须调用 `ask_question`；严禁使用 Cursor 内置的 ask_user_question
-7. `ask_question` 参数格式: `{ "questions": [{ "question": "问题文本", "options": [{ "id": "a", "label": "选项A" }, { "id": "b", "label": "选项B" }], "allow_multiple": false }] }`
-8. 单选: `allow_multiple: false`；多选: `allow_multiple: true`；用户可额外输入补充文本
-9. `ask_question` 收到用户回答后，处理完毕仍需调用 `check_messages` 继续监听
-10. 禁止在每轮结束时用 `ask_question` 问「还有别的需要吗」；`ask_question` 仅限任务中需要用户决策时使用
-11. `check_messages` 支持可选参数 `reply`（string，Markdown 格式）：调用时传入本轮回复摘要，推送到插件界面展示给用户
-12. 禁止调用 subagent 并发任务
-13. 如果 `check_messages` 或 `ask_question` 因客户端取消、连接抖动或内部异常而意外返回/报错，严禁把此类内部提示输出给用户，必须立刻再次调用对应工具继续等待
-14. 执行多步骤任务时，每完成一个关键步骤后，必须调用 `send_progress` 推送进度摘要。`send_progress` 立即返回，不等待
-15. **严禁切换到 Plan 模式**。始终在当前模式（Agent）下直接执行
-16. **会话标识（session_tag）**：首次调用 `check_messages` 时先调用 `register_session` 传入唯一 `session_tag`（如 `sess_`+随机串），之后每次调用 `check_messages` 必须传入同一 `session_tag`
+These rules apply to the configured Messenger MCP servers, including `Nshen-mcp-1`, `Nshen-mcp-2`, and other `Nshen-mcp-*` channels. The MCP server may also appear as `Nshen-claw` in tool metadata.
 
----
-**⚠️ 回合结束（最高优先级强制规则）**:
-- 回复**完整输出完毕后**，**绝对不能直接结束回合**，最后一步**必须**调用 Cursor Messenger MCP 的 `check_messages` 工具
-- 必须带本对话的 `session_tag`；若尚未调用过 `register_session`，请先注册再调用
-- **如果你不调用 check_messages，用户将无法继续与你对话，这是不可接受的**
-- `check_messages` 会阻塞等待，这是正常行为，不需要你做任何事
-- 收到心跳保活或超时后，直接再次调用 `check_messages`——这不是循环
+## Session Setup
+
+1. Before the first `check_messages` call in a chat, call `register_session` with a stable unique `session_tag`, for example `sess_<random>`.
+2. Reuse the same `session_tag` for every later `check_messages` call in that chat.
+3. Use the MCP channel that matches the current plugin conversation tab.
+
+## Receiving Messages
+
+1. `check_messages` blocks while it waits for the next plugin message. Blocking is expected.
+2. When `check_messages` returns a real user message, complete the user's task normally.
+3. If `check_messages` returns a keepalive or timeout system notice, do not show that notice to the user. Immediately call `check_messages` again with the same `session_tag`.
+4. If `check_messages` is cancelled or interrupted, do not show the internal error to the user. Call `check_messages` again with the same `session_tag`.
+
+## Final Reply Callback
+
+This is mandatory. After completing any user task, send the full answer in Cursor's native chat first. Then the final action of the turn must be:
+
+```json
+{
+  "tool": "check_messages",
+  "arguments": {
+    "session_tag": "<same session_tag>",
+    "reply": "<a brief completion summary for the plugin, not the full answer>"
+  }
+}
+```
+
+Do not end the turn without this final `check_messages` call. The extension UI receives only the compact completion summary through the `reply` argument. If you omit `reply`, the plugin will not receive the completion callback.
+
+## Progress And Questions
+
+1. During long multi-step work, call `send_progress` after important milestones. `send_progress` returns immediately and does not replace the final `check_messages(reply=...)` callback.
+2. When the user must choose or confirm something, call `ask_question`. Do not use Cursor's built-in `ask_user_question` for plugin-originated questions.
+3. After `ask_question` returns an answer and you finish handling it, call `check_messages` again with the same `session_tag`. If that finishes a user-visible task, include only a short summary in `reply`.

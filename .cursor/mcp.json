@@ -1,12 +1,148 @@
 {
   "mcpServers": {
-    "Cursor Messenger": {
+    "Nshen-mcp-1": {
       "command": "node",
       "args": [
-        "c:\\Users\\69483\\.cursor\\extensions\\local.nshen-lu-dadan-1.4.1\\dist\\mcp-server.mjs"
+        "c:\\Users\\69483\\.cursor\\extensions\\local.nshen-claw-2.0.34\\dist\\mcp-server.mjs"
       ],
       "env": {
-        "MESSENGER_DATA_DIR": "C:\\Users\\69483\\.cursor-mcp-messenger\\c8df28ee1193"
+        "MESSENGER_DATA_DIR": "C:\\Users\\69483\\.cursor-mcp-messenger\\c8df28ee1193\\channels\\1",
+        "MESSENGER_CHANNEL": "1"
+      },
+      "autoApprove": [
+        "check_messages",
+        "send_progress",
+        "register_session"
+      ]
+    },
+    "Nshen-mcp-2": {
+      "command": "node",
+      "args": [
+        "c:\\Users\\69483\\.cursor\\extensions\\local.nshen-claw-2.0.34\\dist\\mcp-server.mjs"
+      ],
+      "env": {
+        "MESSENGER_DATA_DIR": "C:\\Users\\69483\\.cursor-mcp-messenger\\c8df28ee1193\\channels\\2",
+        "MESSENGER_CHANNEL": "2"
+      },
+      "autoApprove": [
+        "check_messages",
+        "send_progress",
+        "register_session"
+      ]
+    },
+    "Nshen-mcp-3": {
+      "command": "node",
+      "args": [
+        "c:\\Users\\69483\\.cursor\\extensions\\local.nshen-claw-2.0.34\\dist\\mcp-server.mjs"
+      ],
+      "env": {
+        "MESSENGER_DATA_DIR": "C:\\Users\\69483\\.cursor-mcp-messenger\\c8df28ee1193\\channels\\3",
+        "MESSENGER_CHANNEL": "3"
+      },
+      "autoApprove": [
+        "check_messages",
+        "send_progress",
+        "register_session"
+      ]
+    },
+    "Nshen-mcp-4": {
+      "command": "node",
+      "args": [
+        "c:\\Users\\69483\\.cursor\\extensions\\local.nshen-claw-2.0.34\\dist\\mcp-server.mjs"
+      ],
+      "env": {
+        "MESSENGER_DATA_DIR": "C:\\Users\\69483\\.cursor-mcp-messenger\\c8df28ee1193\\channels\\4",
+        "MESSENGER_CHANNEL": "4"
+      },
+      "autoApprove": [
+        "check_messages",
+        "send_progress",
+        "register_session"
+      ]
+    },
+    "Nshen-mcp-5": {
+      "command": "node",
+      "args": [
+        "c:\\Users\\69483\\.cursor\\extensions\\local.nshen-claw-2.0.34\\dist\\mcp-server.mjs"
+      ],
+      "env": {
+        "MESSENGER_DATA_DIR": "C:\\Users\\69483\\.cursor-mcp-messenger\\c8df28ee1193\\channels\\5",
+        "MESSENGER_CHANNEL": "5"
+      },
+      "autoApprove": [
+        "check_messages",
+        "send_progress",
+        "register_session"
+      ]
+    },
+    "Nshen-mcp-6": {
+      "command": "node",
+      "args": [
+        "c:\\Users\\69483\\.cursor\\extensions\\local.nshen-claw-2.0.34\\dist\\mcp-server.mjs"
+      ],
+      "env": {
+        "MESSENGER_DATA_DIR": "C:\\Users\\69483\\.cursor-mcp-messenger\\c8df28ee1193\\channels\\6",
+        "MESSENGER_CHANNEL": "6"
+      },
+      "autoApprove": [
+        "check_messages",
+        "send_progress",
+        "register_session"
+      ]
+    },
+    "Nshen-mcp-7": {
+      "command": "node",
+      "args": [
+        "c:\\Users\\69483\\.cursor\\extensions\\local.nshen-claw-2.0.34\\dist\\mcp-server.mjs"
+      ],
+      "env": {
+        "MESSENGER_DATA_DIR": "C:\\Users\\69483\\.cursor-mcp-messenger\\c8df28ee1193\\channels\\7",
+        "MESSENGER_CHANNEL": "7"
+      },
+      "autoApprove": [
+        "check_messages",
+        "send_progress",
+        "register_session"
+      ]
+    },
+    "Nshen-mcp-8": {
+      "command": "node",
+      "args": [
+        "c:\\Users\\69483\\.cursor\\extensions\\local.nshen-claw-2.0.34\\dist\\mcp-server.mjs"
+      ],
+      "env": {
+        "MESSENGER_DATA_DIR": "C:\\Users\\69483\\.cursor-mcp-messenger\\c8df28ee1193\\channels\\8",
+        "MESSENGER_CHANNEL": "8"
+      },
+      "autoApprove": [
+        "check_messages",
+        "send_progress",
+        "register_session"
+      ]
+    },
+    "Nshen-mcp-9": {
+      "command": "node",
+      "args": [
+        "c:\\Users\\69483\\.cursor\\extensions\\local.nshen-claw-2.0.34\\dist\\mcp-server.mjs"
+      ],
+      "env": {
+        "MESSENGER_DATA_DIR": "C:\\Users\\69483\\.cursor-mcp-messenger\\c8df28ee1193\\channels\\9",
+        "MESSENGER_CHANNEL": "9"
+      },
+      "autoApprove": [
+        "check_messages",
+        "send_progress",
+        "register_session"
+      ]
+    },
+    "Nshen-mcp-10": {
+      "command": "node",
+      "args": [
+        "c:\\Users\\69483\\.cursor\\extensions\\local.nshen-claw-2.0.34\\dist\\mcp-server.mjs"
+      ],
+      "env": {
+        "MESSENGER_DATA_DIR": "C:\\Users\\69483\\.cursor-mcp-messenger\\c8df28ee1193\\channels\\10",
+        "MESSENGER_CHANNEL": "10"
       },
       "autoApprove": [
         "check_messages",
