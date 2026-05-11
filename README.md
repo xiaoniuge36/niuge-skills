@@ -10,7 +10,7 @@ AI Agent Skills 集合，以**企业级前端代码生成**为核心能力，同
 |-------|------|------|
 | [fe-codegen-workbench](./skills/fe-codegen-workbench/) | 前端代码生成统一工作台，覆盖环境检测→需求分析→模板匹配→页面生成→代码审查完整闭环 | [SKILL.md](./skills/fe-codegen-workbench/SKILL.md) |
 
-支持 React（Ant Design Pro）、Vue 3（Element Plus）、Vue 2（Element UI）三大技术栈，内置 16 种组件模板。
+支持 React（Ant Design Pro）、Vue 3（Element Plus）、Vue 2（Element UI）三大技术栈，内置 16 种组件模板。新建**企业管理后台**类项目默认使用 [`create-admin-platform`](https://www.npmjs.com/package/create-admin-platform) 脚手架（OSS 默认模式，不带 `--thsk`）。
 
 ### 工作流 Skills
 
@@ -95,7 +95,9 @@ cp -r skills/fe-codegen-workbench /path/to/your-project/.cursor/skills/
 ```
 用户输入需求（文字 / 原型图 / 接口文件）
     ↓
-[1] 环境检测 → 有项目：检测技术栈 / 无项目：默认创建 React
+[1] 环境检测 → 有项目：检测技术栈
+    ↓   无项目且为「管理后台」场景：脚手架走 create-admin-platform CLI（不带 --thsk）
+    ↓   无项目且非管理后台：默认创建 React + Vite + AntD
     ↓
 [2] 需求分析 → 结构化需求清单（页面类型、字段、业务规则）
     ↓
@@ -121,6 +123,8 @@ cp -r skills/fe-codegen-workbench /path/to/your-project/.cursor/skills/
 @fe-codegen-workbench 做一个员工管理列表页
 @fe-codegen-workbench 生成用户编辑表单
 @fe-codegen-workbench 在空目录创建项目并生成商品列表页
+@fe-codegen-workbench 创建一个后台管理项目（默认走 create-admin-platform CLI，不带 --thsk）
+@fe-codegen-workbench 创建管理后台项目 my-admin，用 linear 风格，不要 mock
 ```
 
 详见 [使用指南](./skills/fe-codegen-workbench/使用指南.md) 和 [SKILL.md](./skills/fe-codegen-workbench/SKILL.md)。

@@ -157,6 +157,15 @@ flowchart TD
 
 **技术栈策略**：现有项目自动检测技术栈并加载对应知识库；新项目默认 React + TypeScript + Ant Design Pro。
 
+**新项目脚手架策略**：
+- ⭐ **企业管理后台 / 中后台 / admin / 控制台** → 默认使用 [`create-admin-platform`](https://www.npmjs.com/package/create-admin-platform) CLI（React 19 + AntD 6 + React Router 7 + Vite 8，内置登录/权限/主题/MSW mock）：
+  ```bash
+  pnpm dlx create-admin-platform@latest <project-name>
+  ```
+  本工作台**统一走 OSS 默认模式，不带 `--thsk`**。
+- 非管理后台 / 营销页 / 用户明确要"最小化" → 裸 Vite + React + AntD：`npm create vite@latest . -- --template react-ts`。
+- 完整决策表与 flag 说明见 [`references/environment-setup.md`](references/environment-setup.md) 的「脚手架选择决策表」。
+
 **设计系统策略**（见 [DESIGN.md 集成](#designmd-集成可选链路) 小节）：与 [getdesign.md](https://getdesign.md/) 打通，**远程优先 + 本地降级**——默认联网拉取最新设计系统；断网时才回退本地缓存；缓存也缺失时静默降级为 AntD 默认主题。
 
 详见 [SKILL.md](SKILL.md) 和 [使用指南.md](使用指南.md)。

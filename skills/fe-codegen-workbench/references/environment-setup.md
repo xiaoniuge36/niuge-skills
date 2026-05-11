@@ -130,9 +130,133 @@ src/typings/global.d.ts
 
 ## 项目创建（无项目时）
 
-当目标路径无 `package.json` 时，**默认创建 React + TypeScript 项目**。创建前询问用户确认技术栈。
+当目标路径无 `package.json` 时，**默认创建 React + TypeScript 项目**。创建前询问用户确认技术栈与脚手架。
 
-### React 项目创建（默认）
+### 脚手架选择决策表
+
+| 场景 | 推荐脚手架 | 说明 |
+|------|-----------|------|
+| **企业管理后台 / admin / 后台管理 / 中后台 / 运营平台 / CRM / 工单系统** | ⭐ **`create-admin-platform`** | React 19 + Ant Design 6 + React Router 7 + Vite 8。内置登录、权限守卫、菜单路由、Token 持久化、主题切换、请求封装、Zustand、MSW 本地 mock，开箱即可登录跑通 |
+| 标准 B 端列表/表单 demo（不需要登录与权限） | `create-admin-platform` 或裸 Vite | 默认仍优先 `create-admin-platform`；用户明确说"最小化 / 不要登录 / 只要一个空 Vite 工程"时改走裸 Vite |
+| 营销页 / Landing / 官网 / 单页静态站 | 裸 Vite + React | 不需要权限、路由守卫、Mock 后端 |
+| 需要其他视觉品牌（Linear / Stripe / 等） | `create-admin-platform` + `--theme <key>` | CLI 内置 8 个主题：`default` / `fintech` / `compact` / `dark` / `linear` / `stripe` / `apple` / `ibm` |
+| Vue 3 / Vue 2 项目 | 裸 Vite + Vue + Element Plus / Element UI | `create-admin-platform` 仅支持 React |
+
+> **判定关键词**：用户原话含「**管理后台 / 后台管理 / admin / 中后台 / 企业后台 / 运营平台 / 管理系统 / CRM / 工单 / 控制台**」中任意一个 → 默认走 `create-admin-platform`。仅当用户**显式**说"最小化 / 只要 Vite / 不要登录权限 / 不要 mock"时才退化到裸 Vite。
+
+### React 企业管理后台项目（推荐：create-admin-platform）
+
+`create-admin-platform` 是基于 [admin-platform-starter](https://www.npmjs.com/package/create-admin-platform) monorepo 的官方脚手架 CLI，生成项目内联运行时源码、不依赖私有包，独立可发布部署。
+
+#### 用户终端环境要求
+
+- Node.js **>= 20**
+- 推荐 pnpm **>= 10**（npm / yarn 也支持）
+
+#### 标准创建命令（不带 --thsk）
+
+```bash
+# 推荐：pnpm dlx（无需全局安装）
+pnpm dlx create-admin-platform@latest my-admin
+```
+
+上面的简写命令等价于把所有默认 flag 显式写出：
+
+```bash
+pnpm dlx create-admin-platform@latest my-admin \
+  --features=mock,admin,security,form-builder \
+  --router-mode hash \
+  --theme default
+```
+
+替代方式（npm / yarn）：
+
+```bash
+npm create admin-platform@latest my-admin
+yarn create admin-platform my-admin
+```
+
+创建后启动开发服务器：
+
+```bash
+cd my-admin
+pnpm install
+pnpm dev   # 默认端口 8500，http://localhost:8500
+```
+
+#### CLI 关键 flag 说明（OSS 默认模式，**不带 `--thsk`**）
+
+| Flag | 取值 | 默认 | 说明 |
+|------|------|------|------|
+| `--preset <name>` | `blank` / `chain-bill` | `blank` | OSS 脚手架默认 `blank`（空业务路由）；`chain-bill` 是更完整的业务示例 |
+| `--features <list>` | `mock` / `admin` / `security` / `form-builder` 逗号组合 | 全开 | `mock`=MSW 本地后端；`admin`=运营控制台；`security`=登录与权限守卫；`form-builder`=表单设计器 |
+| `--router-mode <mode>` | `hash` / `browser` | `hash` | `hash` 适用任意静态托管；`browser` 需要 host 对未知 URL 回退到 `index.html` |
+| `--theme <key>` | `default` / `fintech` / `compact` / `dark` / `linear` / `stripe` / `apple` / `ibm` | `default` | 初始主题键 |
+| `--registry <url>` | 任意 npm registry | 无 | 写入生成项目的 `.npmrc` |
+| `--interactive` | flag | 不开 | 即便给了 `<project-name>` 也强制交互提示 |
+
+> **本工作台暂不使用 `--thsk` 内部品牌模式**。后续如需启用，再单独评估开放。
+
+#### 生成项目目录结构
+
+```text
+my-admin/
+├── src/
+│   ├── api/                  # 固定认证 API + 业务请求客户端
+│   ├── components/           # 源码内联的通用业务组件
+│   ├── config/               # 应用配置 / 菜单 / 业务路由 / feature flag / 主题
+│   ├── layouts/              # BasicLayout 与布局样式
+│   ├── lib/                  # request / auth / permission / query / branding / dictionary
+│   ├── pages/                # 路由页面 + hooks + 页面私有组件
+│   ├── router/               # 路由创建 / 权限守卫 / 业务路由装配
+│   ├── stores/               # Zustand 全局状态
+│   ├── styles/               # 全局 Less 样式
+│   └── utils/                # 工具函数
+├── types/                    # 项目级运行时类型
+├── mock/                     # 本地 MSW handlers（features.mock 启用时保留）
+├── public/                   # 静态资源
+├── package.json
+├── tsconfig.json
+└── vite.config.ts
+```
+
+#### 生成项目自带脚本
+
+| 命令 | 作用 |
+|------|------|
+| `pnpm dev` | 启动开发服务器（端口 8500） |
+| `pnpm dev:test` / `pnpm dev:uat` | 用 `.env.test` / `.env.uat` 启动 |
+| `pnpm check` | lint + typecheck + test + build 一条龙 |
+| `pnpm build` | typecheck + 生产构建 |
+| `pnpm test` | Vitest 单测 |
+| `pnpm preview` | 本地预览生产产物 |
+
+#### Agent 创建脚手架的标准动作
+
+当判定走 `create-admin-platform` 时，Agent 必须按以下顺序操作：
+
+1. **确认 Node 版本**：用户终端是否 Node >= 20；若不满足，提示用户升级再继续。
+2. **选定包管理器**：默认 pnpm；若用户机器无 pnpm，询问后改用 npm / yarn 对应命令。
+3. **拼装命令**：根据用户场景信号决定 flag：
+   - 用户提到"想看个最小可跑示例" → 全默认（即 `pnpm dlx create-admin-platform@latest <name>`）
+   - 用户提到"用 hash 路由 / 用 browser 路由" → 调整 `--router-mode`
+   - 用户提到品牌风格（如"用 linear 风格"）→ 加 `--theme linear`
+   - 用户提到"不需要 mock / 已有真后端" → `--features=admin,security,form-builder`
+   - 用户提到"不需要登录权限" → `--features=mock,admin,form-builder`
+4. **运行命令**：在用户授权后在目标目录运行；本地若已有同名目录需先确认是否覆盖。
+5. **后置安装与冒烟**：`pnpm install` → `pnpm dev` 起本地预览，告知用户访问 `http://localhost:8500`。
+6. **进入步骤 2 及之后**：脚手架创建完后，继续走需求分析 → 模板匹配 → 页面生成。**注意**：生成的项目已自带页面/路由约定（`src/pages/<feature>/index.tsx + hooks/index.ts + index.less`），后续新增页面必须遵循该约定。
+
+#### 与本工作台模板的关系
+
+- `create-admin-platform` 生成的是**项目骨架**（登录、布局、路由、权限、主题等基础设施）。
+- 本工作台 `references/components/react-*` 内置的是**业务页面模板**（列表 / 表单 / 详情 / 导入 / 上传等）。
+- 两者**互补不冲突**：脚手架解决"从 0 到 1 跑起来"，业务页面模板解决"在脚手架上快速产出标准 CRUD/详情/表单页"。
+- 在 `create-admin-platform` 生成的项目里调用本工作台模板时，必须保留脚手架的 `lib/request` / `lib/auth` / `stores/*` 等基础设施，不要重新引入 axios 实例或独立的 auth 流程。
+
+### React 项目创建（裸 Vite，备选）
+
+仅当用户**显式**要求最小化、不需要登录权限/MSW/路由守卫时使用此路径。
 
 ```bash
 # 1. 使用 Vite 创建 React + TypeScript 项目
@@ -213,12 +337,20 @@ npm install vue-router@4
 
 ### 创建确认
 
-创建前询问用户确认：
+创建前询问用户确认（按下面顺序逐项确认或合并为单次 `ask_question`）：
 
-1. 技术栈（默认 React，可选 Vue3）
-2. UI 库（React 默认 Ant Design Pro，Vue3 默认 Element Plus）
-3. 是否需要路由
-4. 包管理器（npm / pnpm / yarn）
+1. **技术栈**（默认 React，可选 Vue3 / Vue2）
+2. **脚手架**（仅 React 路径有选项）：
+   - ⭐ `create-admin-platform`（默认推荐，企业管理后台首选）
+   - 裸 Vite + React + AntD（仅当用户明确要最小化时）
+3. **CLI flag**（走 `create-admin-platform` 时）：
+   - `--features`（默认 `mock,admin,security,form-builder` 全开；按用户场景裁剪）
+   - `--router-mode`（默认 `hash`）
+   - `--theme`（默认 `default`；用户指定品牌风格时改对应 key）
+   - ⚠️ **暂不开放 `--thsk`**，统一走 OSS 默认模式
+4. **UI 库**（裸 Vite 路径才需要确认；React 默认 Ant Design Pro，Vue3 默认 Element Plus）
+5. **是否需要路由**（裸 Vite 路径才需要确认；`create-admin-platform` 已内置 React Router 7）
+6. **包管理器**（默认 pnpm；如用户机器无 pnpm 退化到 npm / yarn）
 
 ## 输出格式
 
@@ -235,6 +367,17 @@ npm install vue-router@4
 - 页面目录: src/pages/
 - 公共组件: src/components/（已有 FileUpload, SearchForm 等）
 - 知识库已加载: react-antdpro-knowledge.md
+```
+
+新建项目时额外输出脚手架信息：
+
+```
+项目创建计划：
+- 脚手架: create-admin-platform（OSS 默认模式，不带 --thsk）
+- 命令: pnpm dlx create-admin-platform@latest my-admin --features=mock,admin,security,form-builder --router-mode hash --theme default
+- 终端环境: Node 22.10.0 ✅（>= 20）/ pnpm 10.33.2 ✅（>= 10）
+- 目标目录: D:/A-Project/my-admin（不存在，将自动创建）
+- 后续动作: pnpm install → pnpm dev（端口 8500）→ 进入步骤 2 需求分析
 ```
 
 ## 与 MCP 的配合
