@@ -1,0 +1,4 @@
+interface:
+  display_name: "Alibaba F2E Spec"
+  short_description: "Write, review, and migrate frontend code against Alibaba F2E Spec"
+  default_prompt: "Use $alibaba-f2e-spec to align this frontend project with Alibaba F2E coding, linting, formatting, refactoring, and engineering conventions."

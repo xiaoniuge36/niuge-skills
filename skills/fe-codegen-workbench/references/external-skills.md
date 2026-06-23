@@ -71,7 +71,29 @@
 - Vue Router / Pinia 行业标准实现
 - 常见反模式识别（不当 Watcher、解构 reactive 丢失响应式）
 
-### 5. frontend-design（UI/UX 设计思维）
+### 5. alibaba-f2e-spec（阿里前端规约）
+
+**来源**：本地 `skills/alibaba-f2e-spec/`
+
+**来源补充**：当前项目版本结合了 `alibaba/f2e-spec` 本地快照与 `danchaofan869527/f2e-spec-skill` 的单文件 Skill 表达方式；执行时读取本地 `references/`，不会自动拉取远程仓库。
+
+**适用条件**：
+- 用户明确要求"阿里前端规约"、`f2e-spec`、`f2elint`、"统一 lint"或"按阿里规约审查"
+- 目标项目已接入 `f2elint`、`eslint-config-ali`、`stylelint-config-ali`、`prettier-config-ali`、`commitlint-config-ali` 或 `markdownlint-config-ali`
+- 生成代码后需要额外执行 Alibaba F2E 规范合规审查
+
+**核心能力**：
+- 为 JS/TS/React/Node/CSS/HTML 生成和审查提供规约约束
+- 为 Git Commit、CHANGELOG、Markdown 和 HTTP JSON API 提供工程规约参考
+- 给出 `f2elint` 或单项 ali config 的接入/迁移方案
+
+**与工作台的协同**：
+- 不替代 `references/code-standards.md`，只作为用户显式要求或项目已有规约时的合规增强层
+- 步骤 4 生成代码时，补充检查 Alibaba F2E `mandatory` 规则
+- 步骤 5 审查时，可作为 `self-review-checklist.md` 与 `code-review-expert` 的规范补充
+- 涉及依赖、根配置、Husky、lint-staged、commitlint 等修改时，按项目授权边界先确认再落地
+
+### 6. frontend-design（UI/UX 设计思维）
 
 **来源**：`anthropics/skills`
 **安装**：`npx skills add anthropics/skills --skill frontend-design`
@@ -91,27 +113,27 @@
 
 ## 可选增强 Skills
 
-### 6. typescript-advanced-types
+### 7. typescript-advanced-types
 
 **来源**：社区
 **用途**：生成复杂 TypeScript 类型定义时参考
 
-### 7. webapp-testing
+### 8. webapp-testing
 
 **来源**：`anthropics/skills`
 **用途**：生成代码后可选的端到端测试
 
-### 8. systematic-debugging
+### 9. systematic-debugging
 
 **来源**：`anthropics/skills`
 **用途**：生成代码出错时的系统化调试
 
-### 9. verification-before-completion
+### 10. verification-before-completion
 
 **来源**：`anthropics/skills`
 **用途**：完成生成后的最终验证
 
-### 10. ui-ux-pro-max
+### 11. ui-ux-pro-max
 
 **来源**：社区
 **用途**：更高级的 UI/UX 设计规范
@@ -155,12 +177,16 @@
 # 知识库参考（建议安装）
 npx skills add vercel-labs/agent-skills --skill react-best-practices
 npx skills add anthropics/skills --skill frontend-design
+
+# 规范合规（按需安装）
+npx skills add xiaoniuge36/niuge-skills --skill alibaba-f2e-spec
 ```
 
 ### 完整安装
 
 ```bash
 npx skills add vercel-labs/agent-skills --skill react-best-practices
+npx skills add xiaoniuge36/niuge-skills --skill alibaba-f2e-spec
 npx skills add anthropics/skills --skill frontend-design
 npx skills add anthropics/skills --skill vue-best-practices
 npx skills add anthropics/skills --skill webapp-testing
@@ -200,13 +226,16 @@ npx skills add anthropics/skills --skill verification-before-completion
   ├─ "react"
   │   ├─ 加载 react-antdpro-knowledge.md（内置）
   │   ├─ 检测 vercel-react-best-practices 是否已安装 → 已装则加载
+  │   ├─ 用户要求阿里规约或项目已接入 ali config → 加载 alibaba-f2e-spec
   │   └─ 组件匹配时过滤 react-* 模板
   ├─ "vue3"
   │   ├─ 加载 vue-knowledge.md（内置）
   │   ├─ 检测 vue-best-practices 是否已安装 → 已装则加载
+  │   ├─ 用户要求阿里规约或项目已接入 ali config → 加载 alibaba-f2e-spec
   │   └─ 组件匹配时过滤 vue3-* 模板
   ├─ "vue2"
   │   ├─ 加载 vue-knowledge.md（内置，Vue 2 兼容部分）
+  │   ├─ 用户要求阿里规约或项目已接入 ali config → 加载 alibaba-f2e-spec
   │   └─ 组件匹配时过滤 vue2-* 模板
   └─ 无项目（新建）
       ├─ 默认 techStack = "react"

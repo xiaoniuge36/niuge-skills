@@ -219,6 +219,7 @@ fe-codegen-workbench/
 | `getdesign.md` 集成 | 深度集成（可选链路） | 步骤 2.5/3.5/4/5 的设计系统推荐与落地（详见下节） |
 | `vercel-react-best-practices` | 知识库参考 | React 性能优化 58 条规则 |
 | `vue-best-practices` | 知识库参考 | Vue 3 响应式/组件/状态管理 |
+| `alibaba-f2e-spec` | 规范合规参考 | 用户要求阿里前端规约、f2elint 或项目已接入 ali config 时，用于 JS/TS/React/Node/CSS/HTML 与工程规约审查 |
 | `frontend-design` | 知识库参考 | 有设计稿时的 UI/UX 设计思维（与 DESIGN.md 链路互斥，不建议同时启用） |
 | `ui-ux-pro-max` | 可选增强 | 已安装且明确追求高保真 UI/UX 升级时再启用 |
 
@@ -344,5 +345,6 @@ cp -r fe-codegen-workbench .claude/skills/
 
 ```bash
 npx skills add vercel-labs/agent-skills --skill react-best-practices
+npx skills add xiaoniuge36/niuge-skills --skill alibaba-f2e-spec
 npx skills add anthropics/skills --skill frontend-design
 ```
