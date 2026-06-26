@@ -22,6 +22,8 @@ Use this file to choose the narrowest relevant part of `alibaba/f2e-spec`. Do no
 
 ## Coding Specs
 
+> **No Vue spec upstream:** f2e-spec covers JavaScript, TypeScript, React, Node, CSS, and HTML — there is no dedicated Vue coding spec. For `.vue` files, apply the Common + JavaScript/TypeScript rules below and rely on the project's own Vue lint plugin for template-level rules.
+
 ### Common
 
 Use for every front-end code file:
@@ -44,7 +46,7 @@ Use for `.js`, `.jsx`, `.mjs`, `.cjs`, and JS embedded in templates:
 - Prefer destructuring, spread syntax, and object property/method shorthand when they improve readability.
 - Keep imports at the top, do not duplicate imports from the same module, and prefer ES module syntax.
 - Do not ship `eval`, `debugger`, unguarded `console`, `alert`, or assignments to readonly globals.
-- Comments explain non-obvious intent; keep `TODO`/`FIXME` actionable; delete commented-out code.
+- Comments: prefer adding short comments that explain non-obvious intent (the "why"), especially for business rules, edge cases, and workarounds; keep `TODO`/`FIXME` actionable; leave a space after `//`; delete commented-out code instead of leaving it.
 - File names use lowercase/kebab-case; variables/functions use camelCase; classes use PascalCase.
 
 ### TypeScript

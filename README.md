@@ -22,7 +22,7 @@ AI Agent Skills 集合，以**企业级前端代码生成**为核心能力，同
 
 | Skill | 说明 | 入口 |
 |-------|------|------|
-| [alibaba-f2e-spec](./skills/alibaba-f2e-spec/) | 基于 [alibaba/f2e-spec](https://github.com/alibaba/f2e-spec) 的前端编码与工程规约，覆盖 JS/TS/React/Node/CSS/HTML、Git、Changelog、Markdown、HTTP JSON API、f2elint 与各类 ali config 接入 | [SKILL.md](./skills/alibaba-f2e-spec/SKILL.md) |
+| [frontend-code-spec](./skills/frontend-code-spec/) | 前端代码规范：基于 [alibaba/f2e-spec](https://github.com/alibaba/f2e-spec) 的前端编码与工程规约，覆盖 JS/TS/React/Node/CSS/HTML、Git、Changelog、Markdown、HTTP JSON API、f2elint 与各类 ali config 接入 | [SKILL.md](./skills/frontend-code-spec/SKILL.md) |
 
 ### 集成 Skills
 
@@ -45,8 +45,8 @@ npx skills add xiaoniuge36/niuge-skills --skill fe-codegen-workbench
 # 安装上下文压缩
 npx skills add xiaoniuge36/niuge-skills --skill context-compression
 
-# 安装阿里前端规约
-npx skills add xiaoniuge36/niuge-skills --skill alibaba-f2e-spec
+# 安装前端代码规范
+npx skills add xiaoniuge36/niuge-skills --skill frontend-code-spec
 
 # 安装代码审查
 npx skills add xiaoniuge36/niuge-skills --skill code-review-expert
@@ -63,8 +63,8 @@ node scripts/install-local-skills.mjs --tool cursor --skill fe-codegen-workbench
 # 同步到 Codex CLI
 node scripts/install-local-skills.mjs --tool codex --skill fe-codegen-workbench
 
-# 同步阿里前端规约到 Codex CLI
-node scripts/install-local-skills.mjs --tool codex --skill alibaba-f2e-spec
+# 同步前端代码规范到 Codex CLI
+node scripts/install-local-skills.mjs --tool codex --skill frontend-code-spec
 
 # 同步到 Claude Code
 node scripts/install-local-skills.mjs --tool claude --skill fe-codegen-workbench
@@ -141,25 +141,25 @@ cp -r skills/fe-codegen-workbench /path/to/your-project/.cursor/skills/
 
 详见 [使用指南](./skills/fe-codegen-workbench/使用指南.md) 和 [SKILL.md](./skills/fe-codegen-workbench/SKILL.md)。
 
-## alibaba-f2e-spec 适用场景
+## frontend-code-spec 适用场景
 
-`alibaba-f2e-spec` 将阿里巴巴前端规约整理成可执行的 Agent 工作流，适合在以下场景使用：
+`frontend-code-spec`（前端代码规范，基于 `alibaba/f2e-spec`）将前端规约整理成可执行的 Agent 工作流，适合在以下场景使用：
 
 - 接入或迁移 `f2elint`、`eslint-config-ali`、`stylelint-config-ali`、`prettier-config-ali`、`commitlint-config-ali`、`markdownlint-config-ali`
-- 生成或审查 JS/TS/React/Node/CSS/HTML 代码时按阿里规约做约束
+- 生成或审查 JS/TS/React/Node/CSS/HTML 代码时按前端代码规范做约束
 - 审查 Commit Message、分支命名、CHANGELOG、Markdown 文档和 HTTP JSON API 结构
-- 与 `fe-codegen-workbench` 搭配，在前端代码生成后补充阿里规约合规检查
+- 与 `fe-codegen-workbench` 搭配，在前端代码生成后补充规约合规检查
 
 触发示例：
 
 ```
-@alibaba-f2e-spec 给这个 React 项目接入阿里前端规约
-@alibaba-f2e-spec 检查当前改动是否符合 f2e-spec
-@alibaba-f2e-spec 按阿里规约审查这个组件和样式
-@alibaba-f2e-spec 生成一份 f2elint 接入方案
+@frontend-code-spec 给这个 React 项目接入前端代码规范
+@frontend-code-spec 检查当前改动是否符合 f2e-spec
+@frontend-code-spec 按规约审查这个组件和样式
+@frontend-code-spec 生成一份 f2elint 接入方案
 ```
 
-该 skill 以本仓库 `skills/alibaba-f2e-spec/references/` 的本地快照执行，参考了 [danchaofan869527/f2e-spec-skill](https://github.com/danchaofan869527/f2e-spec-skill) 的单文件 Skill 表达方式，但不会在每次执行时自动拉取远程仓库；需要最新规则时应显式检查 [alibaba/f2e-spec](https://github.com/alibaba/f2e-spec) 或官方文档。
+该 skill 以本仓库 `skills/frontend-code-spec/references/` 的本地快照执行，参考了 [danchaofan869527/f2e-spec-skill](https://github.com/danchaofan869527/f2e-spec-skill) 的单文件 Skill 表达方式，但不会在每次执行时自动拉取远程仓库；需要最新规则时应显式检查 [alibaba/f2e-spec](https://github.com/alibaba/f2e-spec) 或官方文档。
 
 ## 同步上游 Skills
 
@@ -183,7 +183,11 @@ niuge-skills/
 │   │   ├── agents/                 # Agent 接口配置
 │   │   └── references/             # 子步骤文档 + 组件模板
 │   ├── context-compression/        # 工作流：上下文压缩与继续执行摘要
-│   ├── alibaba-f2e-spec/           # 工程规范：阿里巴巴前端规约与 f2elint 接入
+│   ├── frontend-code-spec/         # 前端代码规范：基于 alibaba/f2e-spec，含 f2elint 接入
+│   │   ├── SKILL.md                # 主调度入口
+│   │   ├── README.md               # Skill 说明
+│   │   ├── agents/                 # Agent 接口配置（agent.yaml + openai.yaml）
+│   │   └── references/             # 规约索引 + 工具接入 + 审查清单
 │   ├── code-review-expert/         # 代码审查
 │   ├── frontend-design/            # 前端设计
 │   ├── webapp-testing/             # 自动化测试

@@ -71,9 +71,9 @@
 - Vue Router / Pinia 行业标准实现
 - 常见反模式识别（不当 Watcher、解构 reactive 丢失响应式）
 
-### 5. alibaba-f2e-spec（阿里前端规约）
+### 5. frontend-code-spec（前端代码规范）
 
-**来源**：本地 `skills/alibaba-f2e-spec/`
+**来源**：本地 `skills/frontend-code-spec/`（基于 `alibaba/f2e-spec`）
 
 **来源补充**：当前项目版本结合了 `alibaba/f2e-spec` 本地快照与 `danchaofan869527/f2e-spec-skill` 的单文件 Skill 表达方式；执行时读取本地 `references/`，不会自动拉取远程仓库。
 
@@ -179,14 +179,14 @@ npx skills add vercel-labs/agent-skills --skill react-best-practices
 npx skills add anthropics/skills --skill frontend-design
 
 # 规范合规（按需安装）
-npx skills add xiaoniuge36/niuge-skills --skill alibaba-f2e-spec
+npx skills add xiaoniuge36/niuge-skills --skill frontend-code-spec
 ```
 
 ### 完整安装
 
 ```bash
 npx skills add vercel-labs/agent-skills --skill react-best-practices
-npx skills add xiaoniuge36/niuge-skills --skill alibaba-f2e-spec
+npx skills add xiaoniuge36/niuge-skills --skill frontend-code-spec
 npx skills add anthropics/skills --skill frontend-design
 npx skills add anthropics/skills --skill vue-best-practices
 npx skills add anthropics/skills --skill webapp-testing
@@ -226,16 +226,16 @@ npx skills add anthropics/skills --skill verification-before-completion
   ├─ "react"
   │   ├─ 加载 react-antdpro-knowledge.md（内置）
   │   ├─ 检测 vercel-react-best-practices 是否已安装 → 已装则加载
-  │   ├─ 用户要求阿里规约或项目已接入 ali config → 加载 alibaba-f2e-spec
+  │   ├─ 用户要求前端代码规范或项目已接入 ali config → 加载 frontend-code-spec
   │   └─ 组件匹配时过滤 react-* 模板
   ├─ "vue3"
   │   ├─ 加载 vue-knowledge.md（内置）
   │   ├─ 检测 vue-best-practices 是否已安装 → 已装则加载
-  │   ├─ 用户要求阿里规约或项目已接入 ali config → 加载 alibaba-f2e-spec
+  │   ├─ 用户要求前端代码规范或项目已接入 ali config → 加载 frontend-code-spec
   │   └─ 组件匹配时过滤 vue3-* 模板
   ├─ "vue2"
   │   ├─ 加载 vue-knowledge.md（内置，Vue 2 兼容部分）
-  │   ├─ 用户要求阿里规约或项目已接入 ali config → 加载 alibaba-f2e-spec
+  │   ├─ 用户要求前端代码规范或项目已接入 ali config → 加载 frontend-code-spec
   │   └─ 组件匹配时过滤 vue2-* 模板
   └─ 无项目（新建）
       ├─ 默认 techStack = "react"

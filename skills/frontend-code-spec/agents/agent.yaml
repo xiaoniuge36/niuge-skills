@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Code Spec"
+  short_description: "按前端代码规范（阿里 f2e-spec）生成、审查、重构前端代码并接入 f2elint / *-config-ali 工具链"
+  default_prompt: "Use $frontend-code-spec for this request: resolve the project shape and its existing convention baseline first, then load only the narrowest reference (spec-index.md to pick spec areas, tool-adoption.md to install/migrate tooling, review-checklist.md to generate or review code). Prefer running f2elint/eslint/stylelint/prettier when available, add short comments explaining non-obvious intent, treat mandatory rules as must-fix, pass the Compliance Gate before reporting done, and report findings as P0/P1/P2/P3."

@@ -51,7 +51,7 @@ Record:
 ## P3: Optional / Contextual
 
 - [ ] Naming conventions are consistent: kebab-case files, camelCase values/functions, PascalCase classes/components/types.
-- [ ] Comments explain intent and remove dead code instead of preserving commented blocks.
+- [ ] Non-obvious intent (business rules, edge cases, workarounds) carries a short explanatory comment; `TODO`/`FIXME` are actionable; commented-out code is deleted rather than preserved.
 - [ ] Project-specific stricter rules are documented where they intentionally differ from f2e-spec.
 
 ## Report Template

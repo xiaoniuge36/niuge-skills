@@ -58,6 +58,15 @@ import { react } from 'eslint-config-ali';
 export default [...react];
 ```
 
+`eslint-config-ali` exposes only the `base` and `react` flat presets — there is no official `vue` preset. For Vue projects, extend `base` and add the project's own Vue plugin (e.g. `eslint-plugin-vue`):
+
+```js
+import { base } from 'eslint-config-ali';
+import vue from 'eslint-plugin-vue';
+
+export default [...base, ...vue.configs['flat/recommended']];
+```
+
 Prefer merging with existing project overrides instead of deleting local rules.
 
 ## Manual Stylelint Setup
