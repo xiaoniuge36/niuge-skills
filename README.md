@@ -1,6 +1,23 @@
 # niuge-skills
 
+[![skills.sh](https://skills.sh/b/xiaoniuge36/niuge-skills)](https://www.skills.sh/xiaoniuge36/niuge-skills)
+
 AI Agent Skills 集合，以**企业级前端代码生成**为核心能力，同时补充长会话协作、上下文治理与工程辅助类 skill。基于 SKILL.md 开放标准，兼容 Claude Code、Codex CLI、Cursor、ChatGPT 等 AI 编码工具。
+
+## skills.sh 收录状态
+
+本仓库已同步到 [skills.sh 公开目录](https://www.skills.sh/xiaoniuge36/niuge-skills)，同步时间：2026-06-26。
+
+skills.sh 当前识别到 8 个 skills：
+
+- `context-compression`
+- `fe-codegen-workbench`
+- `find-skills`
+- `frontend-code-spec`
+- `frontend-design`
+- `webapp-testing`
+- `architecture-diagram`
+- `code-review-expert`
 
 ## Skills 列表
 
@@ -39,6 +56,9 @@ AI Agent Skills 集合，以**企业级前端代码生成**为核心能力，同
 ### 方式一：npx skills CLI（推荐）
 
 ```bash
+# 安装本仓库全部 skills
+npx skills add xiaoniuge36/niuge-skills
+
 # 安装核心工作台
 npx skills add xiaoniuge36/niuge-skills --skill fe-codegen-workbench
 
